@@ -25,11 +25,6 @@ Recurso City:
 			"date:":"18/05, 21:00",
 			"price":"40-200 euros",
 		},
-		
-		{	
-
-		
-		}
 		]
 			
 }
