@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class City {
+	
 	private String id;
 	private String name;
-	private String descripion;
+	private String description;
 	private List<Event> events;
+	
+	public City() {
+	}
 	
 	public City(String name) {
 		this.name = name;
@@ -33,12 +37,12 @@ public class City {
 		this.id = id;
 	}
 
-	public String getDescripion() {
-		return descripion;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDescripion(String descripion) {
-		this.descripion = descripion;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public List<Event> getEvents() {
@@ -49,28 +53,30 @@ public class City {
 		Event event=null;
 		for(Event e : events) {
 			if(e.getId().equals(id)) {
-				event= e;
+				event = e;
 				break;
 			}
 		}
 		return event;
 			
 	}
+	
 	public void addEvent(Event e) {
 		if(events == null) events = new ArrayList<Event>();
 		events.add(e);
 	}
+	
 	public void deleteEvent(Event e) {
 		events.remove(e);
 	}
+	
 	public void deleteEvent(String id) {
-		Event event=getEvent(id);
+		Event event = getEvent(id);
 		
-		if(events!=null) {
+		if(event!=null) {
 			events.remove(event);
 		}
 	
 	}
 	
-
 }

@@ -1,6 +1,7 @@
 package aiss.api.resources;
 
 import java.net.URI;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,8 +27,6 @@ import org.jboss.resteasy.spi.NotFoundException;
 
 import aiss.api.resources.comparators.ComparatorNamePlaylist;
 import aiss.api.resources.comparators.ComparatorNamePlaylistReversed;
-import aiss.model.Playlist;
-import aiss.model.Song;
 import aiss.model.repository.MapCityRepository;
 import aiss.model.repository.CityRepository;
 
