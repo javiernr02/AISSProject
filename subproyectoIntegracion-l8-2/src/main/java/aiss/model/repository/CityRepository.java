@@ -2,28 +2,29 @@ package aiss.model.repository;
 
 import java.util.Collection;
 
-import aiss.model.Playlist;
-import aiss.model.Song;
+import aiss.model.City;
+import aiss.model.Event;
+
 
 public interface CityRepository {
 	
 	
-	// Songs
-	public void addSong(Song s);
-	public Collection<Song> getAllSongs();
-	public Song getSong(String songId);
-	public void updateSong(Song s);
-	public void deleteSong(String songId);
+	// Cities
+	public void addCity(City c);
+	public Collection<City> getAllCities();
+	public City getCity(String cityId);
+	public void updateCity(City c);
+	public void deleteCity(String cityId);
 	
-	// Playlists
-	public void addPlaylist(Playlist p);
-	public Collection<Playlist> getAllPlaylists();
-	public Playlist getPlaylist(String playlistId);
-	public void updatePlaylist(Playlist p);
-	public void deletePlaylist(String playlistId);
-	public Collection<Song> getAll(String playlistId);
-	public void addSong(String playlistId, String songId);
-	public void removeSong(String playlistId, String songId); 
+	// Events
+	public void addEvent(Event e);
+	public Collection<Event> getAllEvents();
+	public Event getEvent(String eventId);
+	public void updateEvent(Event e);
+	public void deleteEvent(String eventId);
+	public Collection<Event> getAll(String cityId);
+	public void addEvent(String cityId, String eventId);
+	public void removeEvent(String cityId, String eventId); 
 
 	
 	
