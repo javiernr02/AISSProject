@@ -4,19 +4,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.ws.rs.core.Application;
-import aiss.api.resources.PlaylistResource;
+import aiss.api.resources.CityResource;
 import aiss.api.resources.SongResource;
 
 
-public class MusicApplication extends Application {
+public class CityEventsApplication extends Application {
 	private Set<Object> singletons = new HashSet<Object>();
 	private Set<Class<?>> classes = new HashSet<Class<?>>();
 
 	// Loads all resources that are implemented in the application
 	// so that they can be found by RESTEasy.
-	public MusicApplication() {
+	public CityEventsApplication() {
 
-		singletons.add(PlaylistResource.getInstance());
+		singletons.add(CityResource.getInstance());
 		singletons.add(SongResource.getInstance());
 	}
 

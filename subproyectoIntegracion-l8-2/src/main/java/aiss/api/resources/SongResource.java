@@ -26,8 +26,8 @@ import aiss.api.resources.comparators.ComparatorArtistSongReversed;
 import aiss.api.resources.comparators.ComparatorYearSong;
 import aiss.api.resources.comparators.ComparatorYearSongReversed;
 import aiss.model.Song;
-import aiss.model.repository.MapPlaylistRepository;
-import aiss.model.repository.PlaylistRepository;
+import aiss.model.repository.MapCityRepository;
+import aiss.model.repository.CityRepository;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -42,10 +42,10 @@ import java.util.stream.Collectors;
 public class SongResource {
 
 	public static SongResource _instance=null;
-	PlaylistRepository repository;
+	CityRepository repository;
 	
 	private SongResource(){
-		repository=MapPlaylistRepository.getInstance();
+		repository=MapCityRepository.getInstance();
 	}
 	
 	public static SongResource getInstance()

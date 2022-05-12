@@ -1,4 +1,4 @@
-# WhatToDoInMyCity API 
+# CityEvents API 
 
 API basada en ciudades y eventos:
 Estos son los recursos

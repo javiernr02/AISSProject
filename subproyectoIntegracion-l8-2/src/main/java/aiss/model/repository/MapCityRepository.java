@@ -8,18 +8,18 @@ import aiss.model.Playlist;
 import aiss.model.Song;
 
 
-public class MapPlaylistRepository implements PlaylistRepository{
+public class MapCityRepository implements CityRepository{
 
 	Map<String, Playlist> playlistMap;
 	Map<String, Song> songMap;
-	private static MapPlaylistRepository instance=null;
+	private static MapCityRepository instance=null;
 	private int index=0;			// Index to create playlists and songs' identifiers.
 	
 	
-	public static MapPlaylistRepository getInstance() {
+	public static MapCityRepository getInstance() {
 		
 		if (instance==null) {
-			instance = new MapPlaylistRepository();
+			instance = new MapCityRepository();
 			instance.init();
 		}
 		

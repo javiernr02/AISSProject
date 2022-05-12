@@ -7,7 +7,7 @@
     	<!-- All REST resources will be prefixed by /api  -->
 	<context-param>
 		<param-name>resteasy.servlet.mapping.prefix</param-name>
-		<param-value>/api/v1</param-value>
+		<param-value>/api</param-value>
 	</context-param>
 
 	<!-- Servlets -->
@@ -16,7 +16,7 @@
 		<servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
 		<init-param>
 			<param-name>javax.ws.rs.Application</param-name>
-			<param-value>aiss.api.MusicApplication</param-value>
+			<param-value>aiss.api.CityEventsApplication</param-value>
 		</init-param>
 	</servlet>		
 	
@@ -24,7 +24,7 @@
 	<!-- All calls to /api/xxx will be sent to the resteasy servlet -->
 	<servlet-mapping>
 		<servlet-name>Resteasy</servlet-name>
-		<url-pattern>/api/v1/*</url-pattern>
+		<url-pattern>/api/*</url-pattern>
 	</servlet-mapping>
 	
 	<!-- Default page to serve -->

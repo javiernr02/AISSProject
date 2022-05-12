@@ -5,7 +5,7 @@ import java.util.Collection;
 import aiss.model.Playlist;
 import aiss.model.Song;
 
-public interface PlaylistRepository {
+public interface CityRepository {
 	
 	
 	// Songs

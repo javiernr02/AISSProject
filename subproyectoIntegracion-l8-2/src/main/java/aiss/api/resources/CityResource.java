@@ -28,29 +28,29 @@ import aiss.api.resources.comparators.ComparatorNamePlaylist;
 import aiss.api.resources.comparators.ComparatorNamePlaylistReversed;
 import aiss.model.Playlist;
 import aiss.model.Song;
-import aiss.model.repository.MapPlaylistRepository;
-import aiss.model.repository.PlaylistRepository;
+import aiss.model.repository.MapCityRepository;
+import aiss.model.repository.CityRepository;
 
 
 
 
 
-@Path("/lists")
-public class PlaylistResource {
+@Path("/cities")	// Para acceder al recurso .../api/cities
+public class CityResource {
 	
 	/* Singleton */
-	private static PlaylistResource _instance=null;
-	PlaylistRepository repository;
+	private static CityResource _instance=null;
+	CityRepository repository;
 	
-	private PlaylistResource() {
-		repository=MapPlaylistRepository.getInstance();
+	private CityResource() {
+		repository=MapCityRepository.getInstance();
 
 	}
 	
-	public static PlaylistResource getInstance()
+	public static CityResource getInstance()
 	{
 		if(_instance==null)
-				_instance=new PlaylistResource();
+				_instance=new CityResource();
 		return _instance;
 	}
 	
