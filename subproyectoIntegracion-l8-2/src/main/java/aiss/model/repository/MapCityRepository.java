@@ -1,19 +1,20 @@
 package aiss.model.repository;
 
 import java.util.Collection;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import aiss.model.Playlist;
-import aiss.model.Song;
+import aiss.model.City;
+import aiss.model.Event;
 
 
 public class MapCityRepository implements CityRepository{
 
-	Map<String, Playlist> playlistMap;
-	Map<String, Song> songMap;
+	Map<String, City> cityMap;
+	Map<String, Event> eventMap;
 	private static MapCityRepository instance=null;
-	private int index=0;			// Index to create playlists and songs' identifiers.
+	private int index=0;			
 	
 	
 	public static MapCityRepository getInstance() {
@@ -28,143 +29,215 @@ public class MapCityRepository implements CityRepository{
 	
 	public void init() {
 		
-		playlistMap = new HashMap<String,Playlist>();
-		songMap = new HashMap<String,Song>();
+		cityMap = new HashMap<String,City>();
+		eventMap = new HashMap<String,Event>();
 		
-		// Create songs
-		Song rollingInTheDeep=new Song();
-		rollingInTheDeep.setTitle("Rolling in the Deep");
-		rollingInTheDeep.setArtist("Adele");
-		rollingInTheDeep.setYear("2011");
-		rollingInTheDeep.setAlbum("21");
-		addSong(rollingInTheDeep);
+		// Create events
+		Event europaLeagueFinal = new Event();
+		europaLeagueFinal.setName("Europa League Final");
+		europaLeagueFinal.setDescription("Silver competition of European international football after "
+				+ "the Champions League");
+		europaLeagueFinal.setOrganizer("Uefa");
+		europaLeagueFinal.setCategory("Sports");
+		europaLeagueFinal.setLocation("La Cartuja Stadium");
+		europaLeagueFinal.setDate("18/05, 21:00");
+		europaLeagueFinal.setPrice("40-200 euros");
+		addEvent(europaLeagueFinal);
 		
-		Song one=new Song();
-		one.setTitle("One");
-		one.setArtist("U2");
-		one.setYear("1992");
-		one.setAlbum("Achtung Baby");
-		addSong(one);
+		Event sergioDalmaConcert = new Event();
+		sergioDalmaConcert.setName("Sergio Dalma's concert");
+		sergioDalmaConcert.setDescription("Singer Sergio Dalma presents his new project in Seville");
+		sergioDalmaConcert.setOrganizer("Ayuntamiento de Sevilla");
+		sergioDalmaConcert.setCategory("Music");
+		sergioDalmaConcert.setLocation("Cartuja Center");
+		sergioDalmaConcert.setDate("21/05, 21:00");
+		sergioDalmaConcert.setPrice("30-50 euros");
+		addEvent(sergioDalmaConcert);
 		
-		Song losingMyReligion=new Song();
-		losingMyReligion.setTitle("Losing my Religion");
-		losingMyReligion.setArtist("REM");
-		losingMyReligion.setYear("1991");
-		losingMyReligion.setAlbum("Out of Time");
-		addSong(losingMyReligion);
+		Event estopaConcert = new Event();
+		estopaConcert.setName("Estopa's concert");
+		estopaConcert.setDescription("Estopa returns to Seville to give a new concert");
+		estopaConcert.setOrganizer("Ayuntamiento de Sevilla");
+		estopaConcert.setCategory("Music");
+		estopaConcert.setLocation("Cartuja Center");
+		estopaConcert.setDate("22/05, 02:00");
+		estopaConcert.setPrice("25 euros");
+		addEvent(estopaConcert);
 		
-		Song smellLikeTeenSpirit=new Song();
-		smellLikeTeenSpirit.setTitle("Smell Like Teen Spirit");
-		smellLikeTeenSpirit.setArtist("Nirvana");
-		smellLikeTeenSpirit.setAlbum("Nevermind");
-		smellLikeTeenSpirit.setYear("1991");
-		addSong(smellLikeTeenSpirit);
+		Event artExhibition = new Event();
+		artExhibition.setName("Art exhibition");
+		artExhibition.setDescription("Guided Tour in the CaixaForum");
+		artExhibition.setOrganizer("Ayuntamiento de Sevilla");
+		artExhibition.setCategory("Art");
+		artExhibition.setLocation("CaixaForum");
+		artExhibition.setDate("27/05, 10:00");
+		artExhibition.setPrice("5 euros");
+		addEvent(artExhibition);
 		
-		Song gotye=new Song();
-		gotye.setTitle("Someone that I used to know");
-		gotye.setArtist("Gotye");
-		gotye.setYear("2011");
-		gotye.setAlbum("Making Mirrors");
-		addSong(gotye);
+		Event eurovisionSongContest = new Event();
+		eurovisionSongContest.setName("Eurovision Song Contest");
+		eurovisionSongContest.setDescription("It is an annual television contest in which the "
+				+ "participans present a song and fight for get the most votes from the public");
+		eurovisionSongContest.setOrganizer("European Broadcasting Union");
+		eurovisionSongContest.setCategory("Music");
+		eurovisionSongContest.setLocation("Pasport Olimpico");
+		eurovisionSongContest.setDate("14/05, 21:00");
+		eurovisionSongContest.setPrice("1300-4000 euros");
+		addEvent(eurovisionSongContest);
 		
-		// Create playlists
-		Playlist japlaylist=new Playlist();
-		japlaylist.setName("AISSPlayList");
-		japlaylist.setDescription("AISS PlayList");
-		addPlaylist(japlaylist);
+		Event ironMaidenConcert = new Event();
+		ironMaidenConcert.setName("Iron Maiden Concert");
+		ironMaidenConcert.setDescription("Iron Maiden returns to Spain this summer");
+		ironMaidenConcert.setOrganizer("Delegación de arte de cataluña");
+		ironMaidenConcert.setCategory("Music");
+		ironMaidenConcert.setLocation("Estadi Olimpic Lluis Companys");
+		ironMaidenConcert.setDate("29/06, 20:00");
+		ironMaidenConcert.setPrice("100-200 euros");
+		addEvent(ironMaidenConcert);
 		
-		Playlist playlist = new Playlist();
-		playlist.setName("Favourites");
-		playlist.setDescription("A sample playlist");
-		addPlaylist(playlist);
+		Event mobileWorldCongress = new Event();
+		mobileWorldCongress.setName("Mobile World Congress");
+		mobileWorldCongress.setDescription("Great fair dedicated to mobile telephony and other "
+				+ "technological devices that reviews the possibilities, advances and novelties "
+				+ "offered by the sector");
+		mobileWorldCongress.setOrganizer("GSM Association");
+		mobileWorldCongress.setCategory("Technology");
+		mobileWorldCongress.setLocation("Fira Gran Via");
+		mobileWorldCongress.setDate("28/02-03/03");
+		mobileWorldCongress.setPrice("700-4200 euros");
+		addEvent(mobileWorldCongress);
 		
-		// Add songs to playlists
-		addSong(japlaylist.getId(), rollingInTheDeep.getId());
-		addSong(japlaylist.getId(), one.getId());
-		addSong(japlaylist.getId(), smellLikeTeenSpirit.getId());
-		addSong(japlaylist.getId(), losingMyReligion.getId());
+		Event rolandGarros = new Event();
+		rolandGarros.setName("Roland Garros");
+		rolandGarros.setDescription("Official tennis tournament that makes up the Grand Slam, "
+				+ "played since its inauguration in 1891");
+		rolandGarros.setOrganizer("French Tennis Federation");
+		rolandGarros.setCategory("Sports");
+		rolandGarros.setLocation("Stade Roland Garros");
+		rolandGarros.setDate("22/05-05/06");
+		rolandGarros.setPrice("120-2750 euros");
+		addEvent(rolandGarros);
 		
-		addSong(playlist.getId(), losingMyReligion.getId());
-		addSong(playlist.getId(), gotye.getId());
+		// Create cities
+		City seville = new City();
+		seville.setName("Seville");
+		seville.setDescription("Seville is a city with a continental Mediterranean climate with a "
+				+ "large number of attractive places");
+		addCity(seville);
+		
+		City barcelona = new City();
+		barcelona.setName("Barcelona");
+		barcelona.setDescription("The capital of Catalonia in Spain, is known for its art and "
+				+ "architecture. The fantastic Sagrada Familia church and other modernist landmarks "
+				+ "designed by Antoni Gaudí adorn the city");
+		addCity(barcelona);
+		
+		City turin = new City();
+		turin.setName("Turin");
+		turin.setDescription("City in Northern Italy and capital of the Piamonte region, known for "
+				+ "its architecture and cuisine");
+		addCity(turin);
+		
+		City paris = new City();
+		paris.setName("Paris");
+		paris.setDescription("Capital of France and one of the great European cities, it is for many "
+				+ "the most romantic and popular tourist destination on the entire planet");
+		addCity(paris);
+		
+		// Add event to cities
+		addEvent(seville.getId(), europaLeagueFinal.getId());
+		addEvent(seville.getId(), sergioDalmaConcert.getId());
+		addEvent(seville.getId(), estopaConcert.getId());
+		addEvent(seville.getId(), artExhibition.getId());
+		
+		addEvent(barcelona.getId(), ironMaidenConcert.getId());
+		addEvent(barcelona.getId(), mobileWorldCongress.getId());
+		
+		addEvent(turin.getId(), eurovisionSongContest.getId());
+		
+		addEvent(paris.getId(), rolandGarros.getId());
 	}
 	
-	// Playlist related operations
+	// City related operations
 	@Override
-	public void addPlaylist(Playlist p) {
-		String id = "p" + index++;	
-		p.setId(id);
-		playlistMap.put(id,p);
+	public void addCity(City c) {
+		String id = "c" + index++;	
+		c.setId(id);
+		cityMap.put(id,c);
 	}
 	
 	@Override
-	public Collection<Playlist> getAllPlaylists() {
-			return playlistMap.values();
+	public Collection<City> getAllCities() {
+			return cityMap.values();
 	}
 
 	@Override
-	public Playlist getPlaylist(String id) {
-		return playlistMap.get(id);
+	public City getCity(String id) {
+		return cityMap.get(id);
 	}
 	
 	@Override
-	public void updatePlaylist(Playlist p) {
-		playlistMap.put(p.getId(),p);
+	public void updateCity(City c) {
+		cityMap.put(c.getId(),c);
 	}
 
 	@Override
-	public void deletePlaylist(String id) {	
-		playlistMap.remove(id);
+	public void deleteCity(String id) {	
+		cityMap.remove(id);
 	}
 	
-
+	
 	@Override
-	public void addSong(String playlistId, String songId) {
-		Playlist playlist = getPlaylist(playlistId);
-		playlist.addSong(songMap.get(songId));
+	public Collection<Event> getAll(String cityId) {
+		return getCity(cityId).getEvents();
 	}
 
 	@Override
-	public Collection<Song> getAll(String playlistId) {
-		return getPlaylist(playlistId).getSongs();
-	}
-
-	@Override
-	public void removeSong(String playlistId, String songId) {
-		getPlaylist(playlistId).deleteSong(songId);
+	public void addEvent(String cityId, String eventId) {
+		City city = getCity(cityId);
+		city.addEvent(eventMap.get(eventId));
 	}
 
 	
-	// Song related operations
+	@Override
+	public void removeEvent(String cityId, String eventId) {
+		getCity(cityId).deleteEvent(eventId);
+	}
+
+	
+	// Event related operations
+	@Override
+	public void addEvent(Event e) {
+		String id = "e" + index++;
+		e.setId(id);
+		eventMap.put(id, e);
+	}
 	
 	@Override
-	public void addSong(Song s) {
-		String id = "s" + index++;
-		s.setId(id);
-		songMap.put(id, s);
-	}
-	
-	@Override
-	public Collection<Song> getAllSongs() {
-			return songMap.values();
+	public Collection<Event> getAllEvents() {
+			return eventMap.values();
 	}
 
 	@Override
-	public Song getSong(String songId) {
-		return songMap.get(songId);
+	public Event getEvent(String eventId) {
+		return eventMap.get(eventId);
 	}
 
 	@Override
-	public void updateSong(Song s) {
-		Song song = songMap.get(s.getId());
-		song.setTitle(s.getTitle());
-		song.setAlbum(s.getAlbum());
-		song.setArtist(s.getArtist());
-		song.setYear(s.getYear());
+	public void updateEvent(Event e) {
+		Event event = eventMap.get(e.getId());
+		event.setName(e.getName());
+		event.setDescription(e.getDescription());
+		event.setOrganizer(e.getOrganizer());
+		event.setCategory(e.getCategory());
+		event.setLocation(e.getLocation());
+		event.setDate(e.getDate());
+		event.setPrice(e.getPrice());
 	}
 
 	@Override
-	public void deleteSong(String songId) {
-		songMap.remove(songId);
+	public void deleteEvent(String eventId) {
+		eventMap.remove(eventId);
 	}
 	
 }
