@@ -5,7 +5,7 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 import aiss.api.resources.CityResource;
-import aiss.api.resources.SongResource;
+import aiss.api.resources.EventResource;
 
 
 public class CityEventsApplication extends Application {
@@ -17,7 +17,7 @@ public class CityEventsApplication extends Application {
 	public CityEventsApplication() {
 
 		singletons.add(CityResource.getInstance());
-		singletons.add(SongResource.getInstance());
+		singletons.add(EventResource.getInstance());
 	}
 
 	@Override

@@ -39,19 +39,19 @@ import java.util.stream.Collectors;
 
 
 @Path("/songs")
-public class SongResource {
+public class EventResource {
 
-	public static SongResource _instance=null;
+	public static EventResource _instance=null;
 	CityRepository repository;
 	
-	private SongResource(){
+	private EventResource(){
 		repository=MapCityRepository.getInstance();
 	}
 	
-	public static SongResource getInstance()
+	public static EventResource getInstance()
 	{
 		if(_instance==null)
-			_instance=new SongResource();
+			_instance=new EventResource();
 		return _instance; 
 	}
 	
