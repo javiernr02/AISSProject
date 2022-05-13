@@ -25,9 +25,11 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import org.jboss.resteasy.spi.BadRequestException;
 import org.jboss.resteasy.spi.NotFoundException;
 
-import aiss.api.resources.comparators.ComparatorNamePlaylist;
-import aiss.api.resources.comparators.ComparatorNamePlaylistReversed;
+import aiss.api.resources.comparators.ComparatorNameCity;
+import aiss.api.resources.comparators.ComparatorNameCityReversed;
 import aiss.model.repository.MapCityRepository;
+import aiss.model.City;
+import aiss.model.Event;
 import aiss.model.repository.CityRepository;
 
 
@@ -56,23 +58,23 @@ public class CityResource {
 
 	@GET
 	@Produces("application/json")
-	public Collection<Playlist> getAll(@QueryParam("order") String order,
+	public Collection<City> getAll(@QueryParam("order") String order,
 			@QueryParam("isEmpty") Boolean isEmpty, @QueryParam("name") String name)
 	{
-		List<Playlist> result = new ArrayList<Playlist>();
+		List<City> result = new ArrayList<City>();
 		
 		// Primero bloque de código de filtrado
-		for(Playlist playlist: repository.getAllPlaylists()) {
+		for(City city: repository.getAllCities()) {
 			// Si no se usa el filtro o si se cumple el filtro por nombre, miramos filtro de isEmpty
-			if(name == null || playlist.getName().equals(name)) {
+			if(name == null || city.getName().equals(name)) {
 				// Si no se usa el filtro isEmpty, o está vacío y por lo tanto canciones a null o su 
 				// tamaño es cero, o no está vacío y por lo tanto canciones no a null y su tamaño
 				// mayor que cero
 				if(isEmpty == null 
-						|| (isEmpty && (playlist.getSongs() == null || playlist.getSongs().size() == 0))
-						|| (!isEmpty && (playlist.getSongs() != null && playlist.getSongs().size() > 0))) {
+						|| (isEmpty && (city.getEvents() == null || city.getEvents().size() == 0))
+						|| (!isEmpty && (city.getEvents() != null && city.getEvents().size() > 0))) {
 					
-					result.add(playlist);
+					result.add(city);
 				}
 			}
 		}
@@ -80,10 +82,10 @@ public class CityResource {
 		// Bloque de código de ordenación
 		if(order != null) {
 			if(order.equals("name")) {
-				Collections.sort(result, new ComparatorNamePlaylist());
+				Collections.sort(result, new ComparatorNameCity());
 			}
 			else if(order.equals("-name")) {
-				Collections.sort(result, new ComparatorNamePlaylistReversed());
+				Collections.sort(result, new ComparatorNameCityReversed());
 			}
 			else {
 				throw new BadRequestException("The order parameter must be 'name' or '-name'.");
@@ -98,12 +100,12 @@ public class CityResource {
 	@GET
 	@Path("/{id}")
 	@Produces("application/json")
-	public Playlist get(@PathParam("id") String id)
+	public City get(@PathParam("id") String id)
 	{
-		Playlist list = repository.getPlaylist(id);
+		City list = repository.getCity(id);
 		
 		if (list == null) {
-			throw new NotFoundException("The playlist with id="+ id +" was not found");	 // Se envía un error 404		
+			throw new NotFoundException("The city with id="+ id +" was not found");	 // Se envía un error 404		
 		}
 		
 		return list;
@@ -112,105 +114,105 @@ public class CityResource {
 	@POST
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response addPlaylist(@Context UriInfo uriInfo, Playlist playlist) {
+	public Response addCity(@Context UriInfo uriInfo, City city) {
 		// @Context permite inyectar determinados objetos con info sobre el determinado contexto
-		if (playlist.getName() == null || "".equals(playlist.getName()))
-			throw new BadRequestException("The name of the playlist must not be null");
+		if (city.getName() == null || "".equals(city.getName()))
+			throw new BadRequestException("The name of the city must not be null");
 		
-		if (playlist.getSongs()!=null)
-			throw new BadRequestException("The songs property is not editable.");
+		if (city.getEvents()!=null)
+			throw new BadRequestException("The events property is not editable.");
 
-		repository.addPlaylist(playlist);
+		repository.addCity(city);
 
 		// Builds the response. Returns the playlist the has just been added.
 		// Construimos la URI para indicar donde está ubicada la nueva playlist que acabamos de crear
 		UriBuilder ub = uriInfo.getAbsolutePathBuilder().path(this.getClass(), "get");
-		URI uri = ub.build(playlist.getId());
+		URI uri = ub.build(city.getId());
 		ResponseBuilder resp = Response.created(uri);
-		resp.entity(playlist);			
+		resp.entity(city);			
 		return resp.build();
 	}
 
 	
 	@PUT
 	@Consumes("application/json")
-	public Response updatePlaylist(Playlist playlist) {
-		Playlist oldplaylist = repository.getPlaylist(playlist.getId());
-		if (oldplaylist == null) {
-			throw new NotFoundException("The playlist with id="+ playlist.getId() +" was not found");			
+	public Response updateCity(City city) {
+		City oldcity = repository.getCity(city.getId());
+		if (oldcity == null) {
+			throw new NotFoundException("The city with id="+ city.getId() +" was not found");			
 		}
 		
-		if (playlist.getSongs()!=null)
-			throw new BadRequestException("The songs property is not editable.");
+		if (city.getEvents()!=null)
+			throw new BadRequestException("The event property is not editable.");
 		
 		// Update name
-		if (playlist.getName()!=null)
-			oldplaylist.setName(playlist.getName());
+		if (city.getName()!=null)
+			oldcity.setName(city.getName());
 		
 		// Update description
-		if (playlist.getDescription()!=null)
-			oldplaylist.setDescription(playlist.getDescription());
+		if (city.getDescription()!=null)
+			oldcity.setDescription(city.getDescription());
 		
 		return Response.noContent().build();  // Mandamos respuesta 204: Okay, sin contenido
 	}
 	
 	@DELETE
 	@Path("/{id}")
-	public Response removePlaylist(@PathParam("id") String id) {
-		Playlist toberemoved=repository.getPlaylist(id);
+	public Response removeCity(@PathParam("id") String id) {
+		City toberemoved=repository.getCity(id);
 		if (toberemoved == null)
-			throw new NotFoundException("The playlist with id="+ id +" was not found");
+			throw new NotFoundException("The city with id="+ id +" was not found");
 		else
-			repository.deletePlaylist(id);
+			repository.deleteCity(id);
 		
 		return Response.noContent().build();
 	}
 	
 	
 	@POST	
-	@Path("/{playlistId}/{songId}")
+	@Path("/{cityId}/{eventId}")
 	@Consumes("text/plain")
 	@Produces("application/json")
-	public Response addSong(@Context UriInfo uriInfo,@PathParam("playlistId") String playlistId, @PathParam("songId") String songId)
+	public Response addEvent(@Context UriInfo uriInfo,@PathParam("cityId") String cityId, @PathParam("eventId") String eventId)
 	{				
 		
-		Playlist playlist = repository.getPlaylist(playlistId);
-		Song song = repository.getSong(songId);
+		City city = repository.getCity(cityId);
+		Event event = repository.getEvent(eventId);
 		
-		if (playlist==null)
-			throw new NotFoundException("The playlist with id=" + playlistId + " was not found");
+		if (city==null)
+			throw new NotFoundException("The city with id=" + cityId + " was not found");
 		
-		if (song == null)
-			throw new NotFoundException("The song with id=" + songId + " was not found");
+		if (event == null)
+			throw new NotFoundException("The event with id=" + eventId + " was not found");
 		
-		if (playlist.getSong(songId)!=null)
-			throw new BadRequestException("The song is already included in the playlist.");
+		if (city.getEvent(eventId)!=null)
+			throw new BadRequestException("The event is already included in the city.");
 			
-		repository.addSong(playlistId, songId);		
+		repository.addEvent(cityId, eventId);		
 
 		// Builds the response
 		UriBuilder ub = uriInfo.getAbsolutePathBuilder().path(this.getClass(), "get");
-		URI uri = ub.build(playlistId);
+		URI uri = ub.build(cityId);
 		ResponseBuilder resp = Response.created(uri);
-		resp.entity(playlist);			
+		resp.entity(city);			
 		return resp.build();
 	}
 	
 	
 	@DELETE
-	@Path("/{playlistId}/{songId}")
-	public Response removeSong(@PathParam("playlistId") String playlistId, @PathParam("songId") String songId) {
-		Playlist playlist = repository.getPlaylist(playlistId);
-		Song song = repository.getSong(songId);
+	@Path("/{cityId}/{eventId}")
+	public Response removeEvent(@PathParam("cityId") String cityId, @PathParam("eventId") String eventId) {
+		City city = repository.getCity(cityId);
+		Event event = repository.getEvent(eventId);
 		
-		if (playlist==null)
-			throw new NotFoundException("The playlist with id=" + playlistId + " was not found");
+		if (city==null)
+			throw new NotFoundException("The city with id=" + cityId + " was not found");
 		
-		if (song == null)
-			throw new NotFoundException("The song with id=" + songId + " was not found");
+		if (event == null)
+			throw new NotFoundException("The event with id=" + eventId + " was not found");
 		
 		
-		repository.removeSong(playlistId, songId);		
+		repository.removeEvent(cityId, eventId);		
 		
 		return Response.noContent().build();
 	}
