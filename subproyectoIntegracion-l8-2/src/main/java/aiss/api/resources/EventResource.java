@@ -1,6 +1,7 @@
 package aiss.api.resources;
 
 import java.net.URI;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -73,7 +74,7 @@ public class EventResource {
 		
 		// Bloque de código de filtrado y de paginación
 		for(int i = start; i < end; i++) {
-			if(events.get(i).getName().contains(q) || events.get(i).getCategory().contains(q)
+			if(offset == null || limit == null || events.get(i).getName().contains(q) || events.get(i).getCategory().contains(q)
 					|| events.get(i).getLocation().contains(q)) {
 				
 				result.add(events.get(i));
