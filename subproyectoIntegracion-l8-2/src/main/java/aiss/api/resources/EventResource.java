@@ -30,10 +30,6 @@ import aiss.api.resources.comparators.ComparatorCategoryEvent;
 import aiss.api.resources.comparators.ComparatorCategoryEventReversed;
 import aiss.api.resources.comparators.ComparatorDateEvent;
 import aiss.api.resources.comparators.ComparatorDateEventReversed;
-import aiss.api.resources.comparators.ComparatorDescriptionEvent;
-import aiss.api.resources.comparators.ComparatorDescriptionEventReversed;
-import aiss.api.resources.comparators.ComparatorLocationEvent;
-import aiss.api.resources.comparators.ComparatorLocationEventReversed;
 import aiss.api.resources.comparators.ComparatorOrganizerEvent;
 import aiss.api.resources.comparators.ComparatorOrganizerEventReversed;
 import aiss.api.resources.comparators.ComparatorPriceEvent;
@@ -95,18 +91,7 @@ public class EventResource {
 			else if(order.equals("-date")) {
 				Collections.sort(result, new ComparatorDateEventReversed());
 			}
-			else if(order.equals("description")) {
-				Collections.sort(result, new ComparatorDescriptionEvent());
-			}
-			else if(order.equals("-description")) {
-				Collections.sort(result, new ComparatorDescriptionEventReversed());
-			}
-			else if(order.equals("location")) {
-				Collections.sort(result, new ComparatorLocationEvent());
-			}
-			else if(order.equals("-location")) {
-				Collections.sort(result, new ComparatorLocationEventReversed());
-			}
+			
 			else if(order.equals("organizer")) {
 				Collections.sort(result, new ComparatorOrganizerEvent());
 			}
