@@ -43,7 +43,7 @@ import aiss.model.repository.MapCityRepository;
 
 
 
-@Path("/events")
+@Path("/events")	// Para acceder al recurso .../api/events
 public class EventResource {
 
 	public static EventResource _instance=null;
@@ -124,15 +124,6 @@ public class EventResource {
 						+ ", 'organizer', '-organizer', 'price', '-price'.");
 			}
 		}
-		
-		// Bloque de código de paginación, no funciona no sé por qué
-		/*if(limit != null) {
-			result.stream().limit(limit).collect(Collectors.toList());
-		}
-		
-		if(offset != null) {
-			result.stream().skip(offset).collect(Collectors.toList());
-		}*/
 		
 		return result;
 		
