@@ -136,7 +136,7 @@ public class EventResource {
 	@GET
 	@Path("/timeLeft/{id}")
 	@Produces("text/plain")
-	public String timeLeftEvent(@PathParam("id") String eventId) {
+	public String getTimeLeftEvent(@PathParam("id") String eventId) {
 		Event event = repository.getEvent(eventId);
 		String res="";
 		

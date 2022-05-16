@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -109,6 +110,43 @@ public class CityResource {
 		}
 		
 		return list;
+	}
+	
+	
+	@GET
+	@Path("/totalPrice/{id}")
+	@Produces("text/plain")
+	public String getTotalPriceCity(@PathParam("id") String id) {
+		List<Event> ls = repository.getAll(id).stream()
+				.collect(Collectors.toList());
+		Integer sumMin = 0;
+		Integer sumMax = 0;
+		String res = "";
+		
+		
+		for(int i=0; i<ls.size(); i++) {
+			String[] tokens = ls.get(i).getPrice().split(" ");
+			
+			if(ls.get(i).getPrice().contains("-")) {
+				String[] nums = tokens[0].split("-");
+				Integer n1 = Integer.parseInt(nums[0].trim());
+				Integer n2 = Integer.parseInt(nums[1].trim());
+				sumMin = sumMin + n1;
+				sumMax = sumMax + n2;		
+			}
+			else {
+				Integer n = Integer.parseInt(tokens[0].trim());
+				sumMin = sumMin + n;
+				sumMax = sumMax + n;
+			}
+			
+		}
+		
+		res = "Para poder ir a todos los eventos de la ciudad con id = " + id + " (" +
+				repository.getCity(id).getName() + ") tendrá que gastarse como mínimo " + sumMin +
+				" euros y como máximo " + sumMax + " euros";
+		
+		return res;
 	}
 	
 	@POST
