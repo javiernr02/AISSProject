@@ -1,7 +1,9 @@
 package aiss.api.resources;
 
 import java.net.URI;
-
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -128,6 +130,41 @@ public class EventResource {
 		}
 		
 		return event;
+	}
+	
+	
+	@GET
+	@Path("/timeLeft/{id}")
+	@Produces("text/plain")
+	public String timeLeftEvent(@PathParam("id") String eventId) {
+		Event event = repository.getEvent(eventId);
+		String res="";
+		
+		if (event == null) {
+			throw new NotFoundException("The event with id=" + eventId + " was not found");			
+		}
+		
+		String dateEventStr = event.getDate();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDate dateEvent = LocalDate.parse(dateEventStr, formatter);
+		LocalDate dateNow = LocalDate.now();
+		
+		if(dateEvent.compareTo(dateNow) > 0) {
+			long timeLeft = ChronoUnit.DAYS.between(LocalDate.now(), dateEvent);
+			res = "Para el evento con id = " + eventId + " (" + event.getName() + ") faltan " 
+					+ timeLeft + " días.";
+		}
+			
+		else if(dateEvent.compareTo(dateNow) < 0) {
+			res = "El evento con id = " + eventId + " (" + event.getName() + ") ya ha tenido "
+					+ "lugar. Habrá que esperar a la próxima edición.";
+		}
+		else if(dateEvent.compareTo(dateNow) == 0) {
+			res = "El evento con id = " + eventId + " (" + event.getName() + ") es hoy. No"
+					+ "olvide coger sus entradas.";
+		}
+		
+		return res;
 	}
 	
 	@POST

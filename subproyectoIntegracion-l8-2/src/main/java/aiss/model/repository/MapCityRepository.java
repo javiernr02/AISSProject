@@ -40,7 +40,7 @@ public class MapCityRepository implements CityRepository{
 		europaLeagueFinal.setOrganizer("Uefa");
 		europaLeagueFinal.setCategory("Sports");
 		europaLeagueFinal.setLocation("La Cartuja Stadium");
-		europaLeagueFinal.setDate("18/05, 21:00");
+		europaLeagueFinal.setDate("18/05/2022");
 		europaLeagueFinal.setPrice("40-200 euros");
 		addEvent(europaLeagueFinal);
 		
@@ -50,7 +50,7 @@ public class MapCityRepository implements CityRepository{
 		sergioDalmaConcert.setOrganizer("Ayuntamiento de Sevilla");
 		sergioDalmaConcert.setCategory("Music");
 		sergioDalmaConcert.setLocation("Cartuja Center");
-		sergioDalmaConcert.setDate("21/05, 21:00");
+		sergioDalmaConcert.setDate("21/05/2022");
 		sergioDalmaConcert.setPrice("30-50 euros");
 		addEvent(sergioDalmaConcert);
 		
@@ -60,7 +60,7 @@ public class MapCityRepository implements CityRepository{
 		estopaConcert.setOrganizer("Ayuntamiento de Sevilla");
 		estopaConcert.setCategory("Music");
 		estopaConcert.setLocation("Cartuja Center");
-		estopaConcert.setDate("22/05, 02:00");
+		estopaConcert.setDate("22/05/2022");
 		estopaConcert.setPrice("25 euros");
 		addEvent(estopaConcert);
 		
@@ -70,7 +70,7 @@ public class MapCityRepository implements CityRepository{
 		artExhibition.setOrganizer("Ayuntamiento de Sevilla");
 		artExhibition.setCategory("Art");
 		artExhibition.setLocation("CaixaForum");
-		artExhibition.setDate("27/05, 10:00");
+		artExhibition.setDate("27/05/2022");
 		artExhibition.setPrice("5 euros");
 		addEvent(artExhibition);
 		
@@ -81,7 +81,7 @@ public class MapCityRepository implements CityRepository{
 		eurovisionSongContest.setOrganizer("European Broadcasting Union");
 		eurovisionSongContest.setCategory("Music");
 		eurovisionSongContest.setLocation("Pasport Olimpico");
-		eurovisionSongContest.setDate("14/05, 21:00");
+		eurovisionSongContest.setDate("14/05/2022");
 		eurovisionSongContest.setPrice("1300-4000 euros");
 		addEvent(eurovisionSongContest);
 		
@@ -91,7 +91,7 @@ public class MapCityRepository implements CityRepository{
 		ironMaidenConcert.setOrganizer("Delegación de arte de cataluña");
 		ironMaidenConcert.setCategory("Music");
 		ironMaidenConcert.setLocation("Estadi Olimpic Lluis Companys");
-		ironMaidenConcert.setDate("29/06, 20:00");
+		ironMaidenConcert.setDate("29/06/2022");
 		ironMaidenConcert.setPrice("100-200 euros");
 		addEvent(ironMaidenConcert);
 		
@@ -103,7 +103,7 @@ public class MapCityRepository implements CityRepository{
 		mobileWorldCongress.setOrganizer("GSM Association");
 		mobileWorldCongress.setCategory("Technology");
 		mobileWorldCongress.setLocation("Fira Gran Via");
-		mobileWorldCongress.setDate("28/02-03/03");
+		mobileWorldCongress.setDate("28/02/2022");
 		mobileWorldCongress.setPrice("700-4200 euros");
 		addEvent(mobileWorldCongress);
 		
@@ -114,7 +114,7 @@ public class MapCityRepository implements CityRepository{
 		rolandGarros.setOrganizer("French Tennis Federation");
 		rolandGarros.setCategory("Sports");
 		rolandGarros.setLocation("Stade Roland Garros");
-		rolandGarros.setDate("22/05-05/06");
+		rolandGarros.setDate("22/05/2022");
 		rolandGarros.setPrice("120-2750 euros");
 		addEvent(rolandGarros);
 		
