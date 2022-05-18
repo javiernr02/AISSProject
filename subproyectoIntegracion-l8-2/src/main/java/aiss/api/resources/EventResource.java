@@ -89,6 +89,7 @@ public class EventResource {
 					
 					result.add(events.get(i));
 					
+					
 					/*if(fields != null) {
 						if(fields.equals("name")) {
 							Event eventNew = new Event(events.get(i).getName());
