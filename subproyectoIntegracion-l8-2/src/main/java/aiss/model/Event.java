@@ -1,5 +1,7 @@
 package aiss.model;
 
+import java.util.List;
+
 public class Event {
 
 	private String id;
@@ -10,6 +12,7 @@ public class Event {
 	private String location;
 	private String date;
 	private String price;
+	private List<FQA> FQAs;
 	
 	public Event() {	
 	}
@@ -101,4 +104,13 @@ public class Event {
 		this.price = price;
 	}
 
+	public List<FQA> getFQAs() {
+		return FQAs;
+	}
+
+	public void setFQAs(List<FQA> fQAs) {
+		FQAs = fQAs;
+	}
+	
+	
 }
