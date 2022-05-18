@@ -264,5 +264,18 @@ public class MapCityRepository implements CityRepository{
 		fqaMap.remove(fqaId);
 		
 	}
+
+	@Override
+	public void addFQA(String eventId, String fqaId) {
+		Event event = getEvent(eventId);
+		event.addFQA(fqaMap.get(fqaId));
+		
+	}
+
+	@Override
+	public void removeFQA(String eventId, String fqaId) {
+		getEvent(eventId).deleteFQA(fqaId);
+		
+	}
 	
 }

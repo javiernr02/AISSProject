@@ -1,5 +1,6 @@
 package aiss.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Event {
@@ -103,6 +104,36 @@ public class Event {
 	public void setPrice(String price) {
 		this.price = price;
 	}
+	public FQA getFQA(String id) {
+		if(FQAs==null) return null;
+		FQA fqa=null;
+		for(FQA f : FQAs) {
+			if(f.getId().equals(id)) {
+				fqa = f;
+				break;
+			}
+		}
+		return fqa;
+			
+	}
+	public void addFQA(FQA f) {
+		if(FQAs == null) FQAs = new ArrayList<FQA>();
+		FQAs.add(f);
+	}
+	
+	public void deleteFQA(FQA e) {
+		FQAs.remove(e);
+	}
+	
+	public void deleteFQA(String id) {
+		FQA fqa = getFQA(id);
+		
+		if(fqa!=null) {
+			FQAs.remove(fqa);
+		}
+	
+	}
+	
 
 	public List<FQA> getFQAs() {
 		return FQAs;

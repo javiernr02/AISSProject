@@ -1,7 +1,6 @@
 package aiss.api.resources;
 
 import java.net.URI;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -37,7 +36,9 @@ import aiss.api.resources.comparators.ComparatorOrganizerEvent;
 import aiss.api.resources.comparators.ComparatorOrganizerEventReversed;
 import aiss.api.resources.comparators.ComparatorPriceEvent;
 import aiss.api.resources.comparators.ComparatorPriceEventReversed;
+import aiss.model.City;
 import aiss.model.Event;
+import aiss.model.FQA;
 import aiss.model.repository.CityRepository;
 import aiss.model.repository.MapCityRepository;
 
@@ -265,6 +266,52 @@ public class EventResource {
 		else {
 			repository.deleteEvent(eventId);
 		}
+		
+		return Response.noContent().build();
+	}
+	
+	@POST	
+	@Path("/{eventId}/{fqaId}")
+	@Consumes("text/plain")
+	@Produces("application/json")
+	public Response addFQA(@Context UriInfo uriInfo,@PathParam("eventId") String eventId, @PathParam("fqaId") String fqaId)
+	{				
+		
+		Event event = repository.getEvent(eventId);
+		FQA fqa = repository.getFQA(fqaId);
+		if (event == null)
+			throw new NotFoundException("The event with id=" + eventId + " was not found");
+		
+		if (fqa == null)
+			throw new NotFoundException("The FQA with id=" + fqaId + " was not found");
+		
+		if (event.getFQA(fqaId)!=null)
+			throw new BadRequestException("The FQA is already included in the event.");
+			
+		repository.addEvent(eventId, fqaId);		
+
+		// Builds the response
+		UriBuilder ub = uriInfo.getAbsolutePathBuilder().path(this.getClass(), "get");
+		URI uri = ub.build(eventId);
+		ResponseBuilder resp = Response.created(uri);
+		resp.entity(event);			
+		return resp.build();
+	}
+	
+	@DELETE
+	@Path("/{eventId}/{fqaId}")
+	public Response removeEvent(@PathParam("eventId") String eventId, @PathParam("fqaId") String fqaId) {
+		Event event = repository.getEvent(eventId);
+		FQA fqa = repository.getFQA(fqaId);
+		
+		if (event==null)
+			throw new NotFoundException("The event with id=" + eventId + " was not found");
+		
+		if (fqa == null)
+			throw new NotFoundException("The event with id=" + fqaId + " was not found");
+		
+		
+		repository.removeFQA(eventId, fqaId);		
 		
 		return Response.noContent().build();
 	}
