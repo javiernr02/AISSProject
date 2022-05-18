@@ -7,12 +7,14 @@ import java.util.Map;
 
 import aiss.model.City;
 import aiss.model.Event;
+import aiss.model.FQA;
 
 
 public class MapCityRepository implements CityRepository{
 
 	Map<String, City> cityMap;
 	Map<String, Event> eventMap;
+	Map<String,FQA> fqaMap;
 	private static MapCityRepository instance=null;
 	private int index=0;			
 	
@@ -238,6 +240,29 @@ public class MapCityRepository implements CityRepository{
 	@Override
 	public void deleteEvent(String eventId) {
 		eventMap.remove(eventId);
+	}
+
+	@Override
+	public void addFQA(FQA f) {
+		String id = "f" + index++;
+		f.setId(id);
+		fqaMap.put(id, f);
+	}
+
+	@Override
+	public Collection<FQA> getAllFQAs() {
+		return fqaMap.values();
+	}
+
+	@Override
+	public FQA getFQA(String fqaId) {
+		return fqaMap.get(fqaId);
+	}
+
+	@Override
+	public void deleteFQA(String fqaId) {
+		fqaMap.remove(fqaId);
+		
 	}
 	
 }

@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import aiss.model.City;
 import aiss.model.Event;
+import aiss.model.FQA;
 
 
 public interface CityRepository {
@@ -24,7 +25,14 @@ public interface CityRepository {
 	public void deleteCity(String cityId);
 	public Collection<Event> getAll(String cityId);
 	public void addEvent(String cityId, String eventId);
-	public void removeEvent(String cityId, String eventId); 
+	public void removeEvent(String cityId, String eventId);
+	
+	//FQAs
+	public void addFQA(FQA f);
+	public Collection<FQA> getAllFQAs();
+	public  FQA getFQA(String fqaId);
+	public void deleteFQA(String fqaId);
+	
 
 	
 	
