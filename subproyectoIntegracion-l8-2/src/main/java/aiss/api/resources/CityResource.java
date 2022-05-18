@@ -81,6 +81,7 @@ public class CityResource {
 				// Si no se usa el filtro o si se cumple el filtro por nombre, miramos filtro de isEmpty
 				if(name == null || cities.get(i).getName().equals(name)) {
 					
+					
 					// Si no se usa el filtro isEmpty, o está vacío y por lo tanto events a null o su 
 					// tamaño es cero. O no está vacío y por lo tanto canciones no a null y su tamaño
 					// mayor que cero
