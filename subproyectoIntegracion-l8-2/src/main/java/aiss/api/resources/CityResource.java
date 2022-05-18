@@ -59,23 +59,50 @@ public class CityResource {
 
 	@GET
 	@Produces("application/json")
-	public Collection<City> getAll(@QueryParam("order") String order,
-			@QueryParam("isEmpty") Boolean isEmpty, @QueryParam("name") String name)
+	public Collection<City> getAll(@QueryParam("limit") Integer limit, @QueryParam("offset")
+			Integer offset, @QueryParam("q") String q, @QueryParam("name") String name,
+			@QueryParam("isEmpty") Boolean isEmpty, @QueryParam("fields") String fields,
+			@QueryParam("order") String order)
 	{
 		List<City> result = new ArrayList<City>();
+		List<City> cities = repository.getAllCities().stream()
+				.collect(Collectors.toList());
 		
-		// Primero bloque de código de filtrado
-		for(City city: repository.getAllCities()) {
-			// Si no se usa el filtro o si se cumple el filtro por nombre, miramos filtro de isEmpty
-			if(name == null || city.getName().equals(name)) {
-				// Si no se usa el filtro isEmpty, o está vacío y por lo tanto canciones a null o su 
-				// tamaño es cero, o no está vacío y por lo tanto canciones no a null y su tamaño
-				// mayor que cero
-				if(isEmpty == null 
-						|| (isEmpty && (city.getEvents() == null || city.getEvents().size() == 0))
-						|| (!isEmpty && (city.getEvents() != null && city.getEvents().size() > 0))) {
+		int start = offset == null ? 0: offset - 1;
+		int end = limit == null ? cities.size(): start + limit;
+		
+		// Primero bloque de código de filtrado y paginación
+		for(int i = start; i<end; i++) {
+			// Si no se usa los filtros de paginación o si se cumple el filtro que contiene cadena
+			// en nombre o descripción, miramos filtro name
+			if(offset == null || limit == null || cities.get(i).getName().contains(q) ||
+					cities.get(i).getDescription().contains(q)) {
+				
+				// Si no se usa el filtro o si se cumple el filtro por nombre, miramos filtro de isEmpty
+				if(name == null || cities.get(i).getName().equals(name)) {
 					
-					result.add(city);
+				
+					// Si no se usa el filtro isEmpty, o está vacío y por lo tanto events a null o su 
+					// tamaño es cero. O no está vacío y por lo tanto canciones no a null y su tamaño
+					// mayor que cero
+					if(isEmpty == null 
+							|| (isEmpty && (cities.get(i).getEvents() == null || 
+									cities.get(i).getEvents().size() == 0))
+							|| (!isEmpty && (cities.get(i).getEvents() != null && 
+									cities.get(i).getEvents().size() > 0))) {
+					
+						result.add(cities.get(i));
+				
+						if(fields != null) {
+							if(fields.equals("name")) {
+								City cityNew = new City(cities.get(i).getName());
+								result.remove(cities.get(i));
+								result.add(cityNew);
+							}
+						}
+					
+					}
+					
 				}
 			}
 		}
@@ -92,6 +119,18 @@ public class CityResource {
 				throw new BadRequestException("The order parameter must be 'name' or '-name'.");
 			}
 		}
+		
+		
+		/*if(fields != null) {
+			for(int i=0; i<result.size(); i++) {
+				City cityNew = new City();
+				cityNew.setName(result.get(i).getName());
+				cityNew.setDescription(result.get(i).getDescription());
+				result.remove(i);
+				result.add(cityNew);
+			}
+		
+		}*/
 		
 		return result;
 			

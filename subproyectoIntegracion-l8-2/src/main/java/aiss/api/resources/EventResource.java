@@ -1,6 +1,7 @@
 package aiss.api.resources;
 
 import java.net.URI;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -61,21 +62,43 @@ public class EventResource {
 	
 	@GET
 	@Produces("application/json")
-	public Collection<Event> getAll(@QueryParam("q") String q, @QueryParam("order") String order,
-			@QueryParam("limit") Integer limit, @QueryParam("offset") Integer offset)
+	public Collection<Event> getAll(@QueryParam("limit") Integer limit, @QueryParam("offset")
+			Integer offset, @QueryParam("q") String q, @QueryParam("name") String name,
+			@QueryParam("organizer") String organizer, @QueryParam("category") String category,
+			@QueryParam("location") String location, 
+			@QueryParam("fields") String fields, @QueryParam("order") String order)
 	{
 		List<Event> result = new ArrayList<Event>();
 		List<Event> events = repository.getAllEvents().stream()
 				.collect(Collectors.toList());
+		
 		int start = offset == null ? 0: offset - 1;
 		int end = limit == null ? events.size(): start + limit;
 		
 		// Bloque de código de filtrado y de paginación
 		for(int i = start; i < end; i++) {
-			if(offset == null || limit == null || events.get(i).getName().contains(q) || events.get(i).getCategory().contains(q)
-					|| events.get(i).getLocation().contains(q)) {
+			if(offset == null || limit == null || events.get(i).getName().contains(q) || 
+					events.get(i).getDescription().contains(q) || events.get(i).getOrganizer().contains(q) || 
+					events.get(i).getLocation().contains(q)) {
 				
-				result.add(events.get(i));
+				if(name == null || organizer == null || category == null || location == null ||
+						events.get(i).getName().equals(name) || 
+						events.get(i).getOrganizer().equals(organizer) ||
+						events.get(i).getOrganizer().equals(category) || 
+						events.get(i).getLocation().equals(location)) {
+					
+					result.add(events.get(i));
+					
+					/*if(fields != null) {
+						if(fields.equals("name")) {
+							Event eventNew = new Event(events.get(i).getName());
+							result.remove(events.get(i));
+							result.add(eventNew);
+						}
+					}*/
+					
+				}
+				
 			}
 		}
 		
