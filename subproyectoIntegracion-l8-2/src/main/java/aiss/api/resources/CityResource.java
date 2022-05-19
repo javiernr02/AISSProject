@@ -68,15 +68,14 @@ public class CityResource {
 		List<City> cities = repository.getAllCities().stream()
 				.collect(Collectors.toList());
 		
-		int start = offset == null ? 0: offset - 1;
+		int start = offset == null ? 0: offset;
 		int end = limit == null ? cities.size(): start + limit;
 		
 		// Primero bloque de código de filtrado y paginación
-		for(int i = start; i<end; i++) {
+		for(int i = start; i < end; i++) {
 			// Si no se usa los filtros de paginación o si se cumple el filtro que contiene cadena
 			// en nombre o descripción, miramos filtro name
-			if(offset == null || limit == null || cities.get(i).getName().contains(q) ||
-					cities.get(i).getDescription().contains(q)) {
+			if(q == null || cities.get(i).getName().contains(q) || cities.get(i).getDescription().contains(q)) {
 				
 				// Si no se usa el filtro o si se cumple el filtro por nombre, miramos filtro de isEmpty
 				if(name == null || cities.get(i).getName().equals(name)) {
@@ -156,11 +155,16 @@ public class CityResource {
 	@Path("/totalPrice/{id}")
 	@Produces("text/plain")
 	public String getTotalPriceCity(@PathParam("id") String id) {
+		City city = repository.getCity(id);
 		List<Event> ls = repository.getAll(id).stream()
 				.collect(Collectors.toList());
 		Integer sumMin = 0;
 		Integer sumMax = 0;
 		String res = "";
+		
+		if (city == null) {
+			throw new NotFoundException("The city with id=" + id + " was not found");			
+		}
 		
 		
 		for(int i=0; i<ls.size(); i++) {

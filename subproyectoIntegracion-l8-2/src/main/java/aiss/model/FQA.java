@@ -7,8 +7,10 @@ public class FQA {
 	private String answer;
 	
 	public FQA() {
-		
+	}
 	
+	public FQA(String question) {
+		this.question = question;
 	}
 	
 	

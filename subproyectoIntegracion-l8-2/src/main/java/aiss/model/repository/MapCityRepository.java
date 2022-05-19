@@ -33,6 +33,7 @@ public class MapCityRepository implements CityRepository{
 		
 		cityMap = new HashMap<String,City>();
 		eventMap = new HashMap<String,Event>();
+		fqaMap = new HashMap<String,FQA>();
 		
 		// Create events
 		Event europaLeagueFinal = new Event();
@@ -47,7 +48,7 @@ public class MapCityRepository implements CityRepository{
 		addEvent(europaLeagueFinal);
 		
 		Event sergioDalmaConcert = new Event();
-		sergioDalmaConcert.setName("Sergio Dalma's concert");
+		sergioDalmaConcert.setName("Sergio Dalma's Concert");
 		sergioDalmaConcert.setDescription("Singer Sergio Dalma presents his new project in Seville");
 		sergioDalmaConcert.setOrganizer("Ayuntamiento de Sevilla");
 		sergioDalmaConcert.setCategory("Music");
@@ -57,7 +58,7 @@ public class MapCityRepository implements CityRepository{
 		addEvent(sergioDalmaConcert);
 		
 		Event estopaConcert = new Event();
-		estopaConcert.setName("Estopa's concert");
+		estopaConcert.setName("Estopa's Concert");
 		estopaConcert.setDescription("Estopa returns to Seville to give a new concert");
 		estopaConcert.setOrganizer("Ayuntamiento de Sevilla");
 		estopaConcert.setCategory("Music");
@@ -146,6 +147,32 @@ public class MapCityRepository implements CityRepository{
 				+ "the most romantic and popular tourist destination on the entire planet");
 		addCity(paris);
 		
+		City doha = new City();
+		doha.setName("Doha");
+		doha.setDescription("Capital of Qatar, a country located on a small peninsula in the Persian "
+				+ "Gulf");
+		addCity(doha);
+		
+		City lisbon = new City();
+		lisbon.setName("Lisbon");
+		lisbon.setDescription("Capital of Portugal and the center of a multifaceted region that "
+				+ "attracts different tastes and sense");
+		addCity(lisbon);
+		
+		// Create fqas
+		FQA fqa1 = new FQA();
+		fqa1.setQuestion("Can I take photos? Can it be filmed?");
+		fqa1.setAnswer("Yes, you can take photos and make films inside the Stadium as long as the "
+				+ "films are not used for commercial purposes.");
+		addFQA(fqa1);
+		
+		FQA fqa2 = new FQA();
+		fqa2.setQuestion("Area for reduced mobility?");
+		fqa2.setAnswer("There is a conveniently equipped area for people with reduced mobility. "
+				+ "Security personnel will assist anyone requesting access to the area. "
+				+ "Mandatory to go with a companion.");
+		addFQA(fqa2);
+		
 		// Add event to cities
 		addEvent(seville.getId(), europaLeagueFinal.getId());
 		addEvent(seville.getId(), sergioDalmaConcert.getId());
@@ -158,6 +185,9 @@ public class MapCityRepository implements CityRepository{
 		addEvent(turin.getId(), eurovisionSongContest.getId());
 		
 		addEvent(paris.getId(), rolandGarros.getId());
+		
+		// Add fqas to events
+		addFQA(europaLeagueFinal.getId(), fqa1.getId());
 	}
 	
 	// City related operations
@@ -241,7 +271,22 @@ public class MapCityRepository implements CityRepository{
 	public void deleteEvent(String eventId) {
 		eventMap.remove(eventId);
 	}
+	
+	@Override
+	public void addFQA(String eventId, String fqaId) {
+		Event event = getEvent(eventId);
+		event.addFQA(fqaMap.get(fqaId));
+		
+	}
 
+	@Override
+	public void removeFQA(String eventId, String fqaId) {
+		getEvent(eventId).deleteFQA(fqaId);
+		
+	}
+	
+	
+	// FQAs related operations
 	@Override
 	public void addFQA(FQA f) {
 		String id = "f" + index++;
@@ -265,17 +310,4 @@ public class MapCityRepository implements CityRepository{
 		
 	}
 
-	@Override
-	public void addFQA(String eventId, String fqaId) {
-		Event event = getEvent(eventId);
-		event.addFQA(fqaMap.get(fqaId));
-		
-	}
-
-	@Override
-	public void removeFQA(String eventId, String fqaId) {
-		getEvent(eventId).deleteFQA(fqaId);
-		
-	}
-	
 }

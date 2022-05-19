@@ -18,6 +18,10 @@ public class Event {
 	public Event() {	
 	}
 	
+	public Event(String name) {
+		this.name = name;
+	}
+	
 	public Event(String name, String description, String organizer, String category, 
 			String location, String date, String price) {
 		this.name = name;

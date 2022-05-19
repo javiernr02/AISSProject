@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.ws.rs.core.Application;
 import aiss.api.resources.CityResource;
 import aiss.api.resources.EventResource;
+import aiss.api.resources.FQAResource;
 
 
 public class CityEventsApplication extends Application {
@@ -18,6 +19,7 @@ public class CityEventsApplication extends Application {
 
 		singletons.add(CityResource.getInstance());
 		singletons.add(EventResource.getInstance());
+		singletons.add(FQAResource.getInstance());
 	}
 
 	@Override

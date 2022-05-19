@@ -1,6 +1,8 @@
 package aiss.api.resources;
 
+import java.net.URI;
 import java.util.ArrayList;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -9,12 +11,17 @@ import java.util.stream.Collectors;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.jboss.resteasy.spi.BadRequestException;
 import org.jboss.resteasy.spi.NotFoundException;
@@ -47,20 +54,33 @@ public class FQAResource {
 	
 	@GET
 	@Produces("application/json")
-	public Collection<FQA> getAll(@QueryParam("q") String q, @QueryParam("order") String order,
-			@QueryParam("limit") Integer limit, @QueryParam("offset") Integer offset)
+	public Collection<FQA> getAll(@QueryParam("limit") Integer limit, @QueryParam("offset") 
+			Integer offset, @QueryParam("q") String q, @QueryParam("fields") String fields,
+			@QueryParam("order") String order)
 	{
 		List<FQA> result = new ArrayList<FQA>();
 		List<FQA> fqas = repository.getAllFQAs().stream()
 				.collect(Collectors.toList());
-		int start = offset == null ? 0: offset - 1;
+		
+		int start = offset == null ? 0: offset;
 		int end = limit == null ? fqas.size(): start + limit;
 		
 		// Bloque de código de filtrado y de paginación
 		for(int i = start; i < end; i++) {
-			if(offset == null || limit == null || fqas.get(i).getQuestion().contains(q) || fqas.get(i).getAnswer().contains(q)) {
+			if(q == null || fqas.get(i).getQuestion().contains(q) || 
+					fqas.get(i).getAnswer().contains(q)) {
+				
 				
 				result.add(fqas.get(i));
+				
+				
+				if(fields != null) {
+					if(fields.equals("question")) {
+						FQA fqaNew = new FQA(fqas.get(i).getQuestion());
+						result.remove(fqas.get(i));
+						result.add(fqaNew);
+					}
+				}
 			}
 		}
 		
@@ -100,6 +120,24 @@ public class FQAResource {
 		}
 		
 		return fqa;
+	}
+	
+	@POST
+	@Consumes("application/json")
+	@Produces("application/json")
+	public Response addFQA(@Context UriInfo uriInfo, FQA fqa) {
+		if(fqa.getQuestion() == null || "".equals(fqa.getQuestion())) {
+			throw new BadRequestException("The name of the fqa must not be null");
+		}
+		
+		repository.addFQA(fqa);
+		
+		// Builds the response. Returns the song that has just been added.
+		UriBuilder ub = uriInfo.getAbsolutePathBuilder().path(this.getClass(), "get");
+		URI uri = ub.build(fqa.getId());
+		ResponseBuilder resp = Response.created(uri);
+		resp.entity(fqa);
+		return resp.build();
 	}
 	
 	@PUT

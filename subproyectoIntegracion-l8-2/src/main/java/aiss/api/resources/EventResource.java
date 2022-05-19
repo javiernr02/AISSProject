@@ -1,6 +1,7 @@
 package aiss.api.resources;
 
 import java.net.URI;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -34,9 +35,6 @@ import aiss.api.resources.comparators.ComparatorDateEvent;
 import aiss.api.resources.comparators.ComparatorDateEventReversed;
 import aiss.api.resources.comparators.ComparatorOrganizerEvent;
 import aiss.api.resources.comparators.ComparatorOrganizerEventReversed;
-import aiss.api.resources.comparators.ComparatorPriceEvent;
-import aiss.api.resources.comparators.ComparatorPriceEventReversed;
-import aiss.model.City;
 import aiss.model.Event;
 import aiss.model.FQA;
 import aiss.model.repository.CityRepository;
@@ -66,37 +64,53 @@ public class EventResource {
 	public Collection<Event> getAll(@QueryParam("limit") Integer limit, @QueryParam("offset")
 			Integer offset, @QueryParam("q") String q, @QueryParam("name") String name,
 			@QueryParam("organizer") String organizer, @QueryParam("category") String category,
-			@QueryParam("location") String location, 
+			@QueryParam("location") String location, @QueryParam("isEmpty") Boolean isEmpty,
 			@QueryParam("fields") String fields, @QueryParam("order") String order)
 	{
 		List<Event> result = new ArrayList<Event>();
 		List<Event> events = repository.getAllEvents().stream()
 				.collect(Collectors.toList());
 		
-		int start = offset == null ? 0: offset - 1;
+		int start = offset == null ? 0: offset;
 		int end = limit == null ? events.size(): start + limit;
 		
 		// Bloque de código de filtrado y de paginación
 		for(int i = start; i < end; i++) {
-			if(offset == null || limit == null || events.get(i).getName().contains(q) || 
+			if(q == null || events.get(i).getName().contains(q) || 
 					events.get(i).getDescription().contains(q) || events.get(i).getOrganizer().contains(q) || 
 					events.get(i).getLocation().contains(q)) {
 				
-				if(name == null || organizer == null || category == null || location == null ||
-						events.get(i).getName().equals(name) || 
-						events.get(i).getOrganizer().equals(organizer) ||
-						events.get(i).getOrganizer().equals(category) || 
-						events.get(i).getLocation().equals(location)) {
+				if(name == null || events.get(i).getName().equals(name)) {
 					
-					result.add(events.get(i));
-					
-					/*if(fields != null) {
-						if(fields.equals("name")) {
-							Event eventNew = new Event(events.get(i).getName());
-							result.remove(events.get(i));
-							result.add(eventNew);
+					if(organizer == null || events.get(i).getOrganizer().equals(organizer)) {
+						
+						if(category == null || events.get(i).getCategory().equals(category)) {
+							
+							if(location == null || events.get(i).getLocation().equals(location)) {
+								
+								
+								if(isEmpty == null
+										|| (isEmpty && (events.get(i).getFQAs() == null || 
+												events.get(i).getFQAs().size() == 0))
+										|| (!isEmpty && (events.get(i).getFQAs() != null && 
+												events.get(i).getFQAs().size() > 0))) {
+									
+									
+									result.add(events.get(i));
+								
+								
+									if(fields != null) {
+										if(fields.equals("name")) {
+											Event eventNew = new Event(events.get(i).getName());
+											result.remove(events.get(i));
+											result.add(eventNew);
+										}
+									}
+								}
+							}
 						}
-					}*/
+					}
+						
 					
 				}
 				
@@ -124,16 +138,9 @@ public class EventResource {
 			else if(order.equals("-organizer")) {
 				Collections.sort(result, new ComparatorOrganizerEventReversed());
 			}
-			else if(order.equals("price")) {
-				Collections.sort(result, new ComparatorPriceEvent());
-			}
-			else if(order.equals("-price")) {
-				Collections.sort(result, new ComparatorPriceEventReversed());
-			}
 			else {
 				throw new BadRequestException("The order parameter must be 'category', '-category', "
-						+ "'date', '-date', 'description', '-description', 'location', '-location'"
-						+ ", 'organizer', '-organizer', 'price', '-price'.");
+						+ "'date', '-date', 'organizer', '-organizer'.");
 			}
 		}
 		
@@ -288,7 +295,7 @@ public class EventResource {
 		if (event.getFQA(fqaId)!=null)
 			throw new BadRequestException("The FQA is already included in the event.");
 			
-		repository.addEvent(eventId, fqaId);		
+		repository.addFQA(eventId, fqaId);		
 
 		// Builds the response
 		UriBuilder ub = uriInfo.getAbsolutePathBuilder().path(this.getClass(), "get");
@@ -308,7 +315,7 @@ public class EventResource {
 			throw new NotFoundException("The event with id=" + eventId + " was not found");
 		
 		if (fqa == null)
-			throw new NotFoundException("The event with id=" + fqaId + " was not found");
+			throw new NotFoundException("The fqa with id=" + fqaId + " was not found");
 		
 		
 		repository.removeFQA(eventId, fqaId);		

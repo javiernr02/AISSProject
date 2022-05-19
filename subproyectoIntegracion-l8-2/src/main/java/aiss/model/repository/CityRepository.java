@@ -32,7 +32,7 @@ public interface CityRepository {
 	//FQAs
 	public void addFQA(FQA f);
 	public Collection<FQA> getAllFQAs();
-	public  FQA getFQA(String fqaId);
+	public FQA getFQA(String fqaId);
 	public void deleteFQA(String fqaId);
 	
 	
