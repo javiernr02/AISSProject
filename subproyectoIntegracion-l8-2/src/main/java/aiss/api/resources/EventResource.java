@@ -206,6 +206,9 @@ public class EventResource {
 			throw new BadRequestException("The name of the event must not be null");
 		}
 		
+		if (event.getFQAs()!=null)
+			throw new BadRequestException("The fqas property is not editable.");
+		
 		repository.addEvent(event);
 		
 		// Builds the response. Returns the song that has just been added.
@@ -225,6 +228,9 @@ public class EventResource {
 		if(oldEvent == null) {
 			throw new NotFoundException("The event with id=" + event.getId() + " was not found");
 		}
+		
+		if (event.getFQAs()!=null)
+			throw new BadRequestException("The fqas property is not editable.");
 		
 		// Update name
 		if(event.getName() != null) {

@@ -188,6 +188,7 @@ public class MapCityRepository implements CityRepository{
 		
 		// Add fqas to events
 		addFQA(europaLeagueFinal.getId(), fqa1.getId());
+		addFQA(ironMaidenConcert.getId(), fqa2.getId());
 	}
 	
 	// City related operations

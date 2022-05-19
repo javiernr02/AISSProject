@@ -224,7 +224,7 @@ public class CityResource {
 		}
 		
 		if (city.getEvents()!=null)
-			throw new BadRequestException("The event property is not editable.");
+			throw new BadRequestException("The events property is not editable.");
 		
 		// Update name
 		if (city.getName()!=null)
