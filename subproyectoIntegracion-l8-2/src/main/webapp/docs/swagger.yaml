@@ -1,7 +1,7 @@
 openapi: 3.0.0
 servers:
+  - url: 'https://city-events-api.ew.r.appspot.com/api'
   - url: 'http://localhost:8089/api'
-  - url: 'https://city-events-api.ew.r.appspot.com'
 info:
   description: Api about cities and events that take place in them
   version: 1.0.0
