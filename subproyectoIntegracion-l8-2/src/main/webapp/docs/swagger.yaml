@@ -1,51 +1,35 @@
 openapi: 3.0.0
 servers:
-  - url: 'http://localhost:8089/api/v1'
+  - url: 'http://localhost:8089/api'
+  - url: 'https://city-events-api.ew.r.appspot.com'
 info:
-  description: Music playlist API
+  description: Api about cities and events that take place in them
   version: 1.0.0
-  title: Playlist-MusicAissAPI
+  title: CityEventsAPI
   contact:
-    email: javnunrui@your-company.com
+    email: javnunrui@alum.us.es
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 tags:
-  - name: songs
-    description: Songs
-  - name: lists
-    description: Playlists
+  - name: cities
+    description: Information about cities
+  - name: events
+    description: Information about city-related events
+  - name: fqas
+    description: Information about events-related fqas
 paths:
-  /songs:
+  /cities:
     get:
       tags:
-        - songs
-      summary: Get songs
-      description: Get all songs
-      operationId: getSongs
+        - cities
+      summary: Get cities
+      description: Get all cities with the right attributes
+      operationId: getCities
       parameters:
-        - name: order
-          in: query
-          description: Order results by album, artist or year
-          required: false
-          schema:
-            type: string
-            enum:
-              - album
-              - '-album'
-              - artist
-              - '-artist'
-              - year
-              - '-year'
-        - name: q
-          in: query
-          description: Query to filter
-          required: false
-          schema:
-            type: string
         - name: limit
           in: query
-          description:  Maximum number of results
+          description: The maximum number of items to return
           required: false
           schema:
             type: integer
@@ -53,112 +37,36 @@ paths:
             minimum: 0
         - name: offset
           in: query
-          description: Offset of the results
+          description: The number of items to skip before starting to collect the result
           required: false
           schema:
             type: integer
             format: int32
             minimum: 0
-      responses:
-        '200':
-          description: Search results matching criteria
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Song'
-        '400':
-          description: Bad request
-    post:
-      tags:
-        - songs
-      summary: Create a song
-      description: Create a song
-      operationId: createSong
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Song'
-        description: Song to create
-        required: true
-      responses:
-        '201':
-          description: Song created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Song'
-        '400':
-          description: Bad request
-    put:
-      tags:
-        - songs
-      summary: Update a song
-      description: Update a song
-      operationId: updateSong
-      requestBody:
-        required: true
-        description: Song to update
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Song'
-      responses:
-        '204':
-          description: Song updated
-        '404':
-          description: Song not found
-  '/songs/{id}':
-    delete:
-      tags:
-        - songs
-      summary: Delete song
-      description: Delete song
-      operationId: deleteSong
-      parameters:
-        - name: id
-          in: path
-          description: Id of the song
-          required: true
+        - name: q
+          in: query
+          description: Query to filter
+          required: false
           schema:
             type: string
-      responses:
-        '204':
-          description: Song deleted
-        '404':
-          description: Song not found
-    get:
-      tags:
-        - songs
-      summary: Get a song by ID
-      description: Get a song by ID
-      operationId: getSong
-      parameters:
-        - name: id
-          in: path
-          description: Id of the song
-          required: true
+        - name: name
+          in: query
+          description: Filter cities by name
+          required: false
           schema:
             type: string
-      responses:
-        '200':
-          description: Song found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Song'
-        '404':
-          description: Song not found
-  /lists:
-    get:
-      tags:
-        - lists
-      summary: Get playlists
-      description: Get all playlists
-      operationId: getPlaylists
-      parameters:
+        - name: isEmpty
+          in: query
+          description: Filter cities with no events
+          required: false
+          schema:
+            type: boolean
+        - name: fields
+          in: query
+          description: Returns only the properties of the cities
+          required: false
+          schema:
+            type: string
         - name: order
           in: query
           description: Order results by name
@@ -168,18 +76,6 @@ paths:
             enum:
               - name
               - '-name'
-        - name: isEmpty
-          in: query
-          description: Filter playlists with no songs
-          required: false
-          schema:
-            type: boolean
-        - name: name
-          in: query
-          description: Filter playlists by name
-          required: false
-          schema:
-            type: string
       responses:
         '200':
           description: Search results matching criteria
@@ -188,197 +84,149 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Playlist'
+                  $ref: '#/components/schemas/City'
         '400':
           description: Bad request
     post:
       tags:
-        - lists
-      summary: Create a playlist
-      description: Create a playlist
-      operationId: createPlaylist
+        - cities
+      summary: Create a city
+      description: Create a city with the right attributes
+      operationId: createCity
       requestBody:
+        description: City to create
         required: true
-        description: Playlist to create
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - name
-              properties:
-                id:
-                  type: string
-                name:
-                  type: string
-                description:
-                  type: string
-              example:
-                id: p5
-                name: Favourites
-                description: My favourite songs
+              $ref: '#/components/schemas/City'
       responses:
         '201':
-          description: Playlist created
+          description: City created correctly
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - name
-                properties:
-                  id:
-                    type: string
-                  name:
-                    type: string
-                  description:
-                    type: string
-                example:
-                  id: p5
-                  name: Favourites
-                  description: My favourite songs
+                $ref: '#/components/schemas/City'
         '400':
           description: Bad request
     put:
       tags:
-        - lists
-      summary: Update a playlist
-      description: Update a playlist
-      operationId: updatePlaylist
+        - cities
+      summary: Update a city
+      description: Update a city introducing new values for certain attributes
+      operationId: updateCity
       requestBody:
+        description: City to update
+        required: true
         content:
           application/json:
             schema:
-              required:
-                - name
-              properties:
-                id:
-                  type: string
-                name:
-                  type: string
-                description:
-                  type: string
-              example:
-                id: p5
-                name: Favourites
-                description: My favourite songs
-        description: Playlist to update
+              $ref: '#/components/schemas/City'
       responses:
         '204':
-          description: Playlist updated
+          description: No content. City updated
         '400':
           description: Bad request
         '404':
-          description: Playlist not found
-  '/lists/{id}':
+          description: City not found
+  '/cities/{id}':
     get:
       tags:
-        - lists
-      summary: Get a playlist
-      description: Get a playlist
-      operationId: getPlaylist
+        - cities
+      summary: Get a city by ID
+      description: Get a city by ID with the right attributes
+      operationId: getCity
       parameters:
         - name: id
           in: path
-          description: Id of the playlist
+          description: Id of the city
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: Playlist found
+          description: City with corresponding id found
           content:
             application/json:
               schema:
-                required:
-                  - name
-                properties:
-                  id:
-                    type: string
-                  name:
-                    type: string
-                  description:
-                    type: string
-                  songs:
-                    type: array
-                    items:
-                      type: object
-                      required:
-                        - title
-                      properties:
-                        id:
-                          type: string
-                        title:
-                          type: string
-                        artist:
-                          type: string
-                        album:
-                          type: string
-                        year:
-                          type: string
-                example:
-                  id: p5
-                  name: Favourites
-                  description: My favourite songs
-                  songs:
-                    - id: s1
-                      title: Rolling in the Deep
-                      artist: Adele
-                      album: '21'
-                      year: '2011'
+                $ref: '#/components/schemas/City'
         '404':
-          description: Playlist not found
+          description: City not found
     delete:
       tags:
-        - lists
-      summary: Delete playlist
-      description: Delete playlist
-      operationId: deletePlaylist
+        - cities
+      summary: Delete a city
+      description: Delete a city
+      operationId: deleteCity
       parameters:
         - name: id
           in: path
-          description: Id of the playlist
+          description: Id of the city
           required: true
           schema:
             type: string
       responses:
         '204':
-          description: Playlist deleted
+          description: No content. City deleted
         '404':
-          description: Playlist not found
-  '/lists/{playlistId}/{songId}':
+          description: City not found
+  '/cities/totalPrice/{id}':
+    get:
+      tags:
+        - cities
+      summary: Get total price of all events of a city by ID
+      description: Get the minimum and maximum total price of all events of a city by ID
+      operationId: getTotalPriceCity
+      parameters:
+        - name: id
+          in: path
+          description: Id of the city
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Calculated total price for city with corresponding id
+          content:
+            text/plain:
+              schema:
+                type: string
+        '404':
+          description: City not found
+  '/cities/{cityId}/{eventId}':
     post:
       tags:
-        - lists
-      summary: Add song to playlist
-      description: Add song to playlist
-      operationId: addSongToPlaylist
+        - cities
+      summary: Add event to city
+      description: Add event with eventId to city with cityId
+      operationId: addEventToCity
       requestBody:
         content:
           text/plain:
             schema:
               type: string
       parameters:
-        - name: playlistId
+        - name: cityId
           in: path
-          description: Id of the playlist
+          description: Id of the city
           required: true
           schema:
             type: string
-        - name: songId
+        - name: eventId
           in: path
-          description: Id of the song
+          description: Id of the event
           required: true
           schema:
             type: string
       responses:
         '201':
-          description: Song added to playlist
+          description: Event added to city correctly
           content:
             application/json:
               schema:
                 required:
                   - name
+                  - description
                 properties:
                   id:
                     type: string
@@ -386,88 +234,540 @@ paths:
                     type: string
                   description:
                     type: string
-                  songs:
+                  events:
                     type: array
                     items:
                       type: object
                       required:
-                        - title
+                        - name
+                        - description
+                        - organizer
+                        - category
+                        - location
+                        - date
                       properties:
                         id:
                           type: string
-                        title:
+                        name:
                           type: string
-                        artist:
+                        description:
                           type: string
-                        album:
+                        organizer:
                           type: string
-                        year:
+                        category:
                           type: string
+                        location:
+                          type: string
+                        date:
+                          type: string
+                        price:
+                          type: string
+                        fqas:
+                          type: array
+                          items:
+                            type: object
+                            required:
+                              - question
+                              - answer
                 example:
-                  id: p5
-                  name: Favourites
-                  description: My favourite songs
-                  songs:
-                    - id: s1
-                      title: Rolling in the Deep
-                      artist: Adele
-                      album: '21'
-                      year: '2011'
+                  id: c9
+                  name: Barcelona
+                  description: The capital of Catalonia in Spain...
+                  events:
+                    - id: e5
+                      name: Iron Maiden Concert
+                      description: Iron Maiden returns to Spain this summer
+                      organizer: Delegacion de arte de Catalunya
+                      category: Music
+                      location: Estadi Olimpic Lluis Companys
+                      date: '29/06/2022'
+                      price: '100-200 euros'
+                      fqas:
+                        - id: f15
+                          question: Area for reduced mobility?
+                          answer: There is a conveniently equipped area for people with reduced mobility...
+                    - id: e6
+                      name: Mobile World Congress
+                      description: Great fair dedicated to mobile telephony and other technological devices...
+                      organizer: GSM Association
+                      category: Technology
+                      location: Fira Gran Via
+                      date: '28/02/2022'
+                      price: '700-4200 euros'
+                      fqas: null
         '400':
           description: Bad request
         '404':
-          description: Playlist or song not found
+          description: City or event not found
     delete:
       tags:
-        - lists
-      summary: Delete song from playlist
-      description: Delete song from playlist
-      operationId: deleteSongFromPlayist
+        - cities
+      summary: Delete event from city
+      description: Delete event from city
+      operationId: deleteEventFromCity
       parameters:
-        - name: playlistId
+        - name: cityId
           in: path
-          description: Id of the playlist
+          description: Id of the city
           required: true
           schema:
             type: string
-        - name: songId
+        - name: eventId
           in: path
-          description: Id of the song
+          description: Id of the event
           required: true
           schema:
             type: string
       responses:
         '204':
-          description: Song deleted from playlist
+          description: No content. Event deleted from city
         '404':
-          description: Playlist or song not found
+          description: City or event not found
+  /events:
+    get:
+      tags:
+        - events
+      summary: Get events
+      description: Get all events with the right attributes
+      operationId: getEvents
+      parameters:
+        - name: limit
+          in: query
+          description: The maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - name: offset
+          in: query
+          description: The number of items to skip before starting to collect the result
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - name: q
+          in: query
+          description: Query to filter
+          required: false
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Filter events by name
+          required: false
+          schema:
+            type: string
+        - name: organizer
+          in: query
+          description: Filter events by organizer
+          required: false
+          schema:
+            type: string
+        - name: category
+          in: query
+          description: Filter events by category
+          required: false
+          schema:
+            type: string
+        - name: location
+          in: query
+          description: Filter events by location
+          required: false
+          schema:
+            type: string
+        - name: isEmpty
+          in: query
+          description: Filter events with no fqas
+          required: false
+          schema:
+            type: boolean
+        - name: fields
+          in: query
+          description: Returns only the properties of the events
+          required: false
+          schema:
+            type: string
+        - name: order
+          in: query
+          description: Order results by category, organizer or date
+          required: false
+          schema:
+            type: string
+            enum:
+              - category
+              - '-category'
+              - organizer
+              - '-organizer'
+              - date
+              - '-date'
+      responses:
+        '200':
+          description: Search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+        '400':
+          description: Bad request
+    post:
+      tags:
+        - events
+      summary: Create a event
+      description: Create a event with the right attributes
+      operationId: createEvent
+      requestBody:
+        description: Event to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+      responses:
+        '201':
+          description: Event created correctly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '400':
+          description: Bad request
+    put:
+      tags:
+        - events
+      summary: Update a event
+      description: Update a event introducing new values for certain attributes
+      operationId: updateEvent
+      requestBody:
+        description: Event to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+      responses:
+        '204':
+          description: No content. Event updated
+        '400':
+          description: Bad request
+        '404':
+          description: Event not found
+  '/events/{id}':
+    get:
+      tags:
+        - events
+      summary: Get a event by ID
+      description: Get a event by ID with the right attributes
+      operationId: getEvent
+      parameters:
+        - name: id
+          in: path
+          description: Id of the event
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Event with corresponding id found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '404':
+          description: Event not found
+    delete:
+      tags:
+        - events
+      summary: Delete a event
+      description: Delete a event
+      operationId: deleteEvent
+      parameters:
+        - name: id
+          in: path
+          description: Id of the event
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No content. Event deleted
+        '404':
+          description: Event not found
+  '/events/timeLeft/{id}':
+    get:
+      tags:
+        - events
+      summary: Get the remaining time for an event by ID
+      description: Get the remaining time in days for an event by ID
+      operationId: getTimeLeftEvent
+      parameters:
+        - name: id
+          in: path
+          description: Id of the event
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Calculated remaining days for event with corresponding id
+          content:
+            text/plain:
+              schema:
+                type: string
+        '404':
+          description: Event not found
+  '/events/{eventId}/{fqaId}':
+    post:
+      tags:
+        - events
+      summary: Add fqa to event
+      description: Add fqa with fqaId to event with eventId
+      operationId: addFqaToEvent
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+      parameters:
+        - name: eventId
+          in: path
+          description: Id of the event
+          required: true
+          schema:
+            type: string
+        - name: fqaId
+          in: path
+          description: Id of the fqa
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Fqa added to event correctly
+          content:
+            application/json:
+              schema:
+                required:
+                  - name
+                  - description
+                  - organizer
+                  - category
+                  - location
+                  - date
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  organizer:
+                    type: string
+                  category:
+                    type: string
+                  location:
+                    type: string
+                  date:
+                    type: string
+                  price:
+                    type: string
+                  fqas:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - question
+                        - answer
+                example:
+                  id: e5
+                  name: Iron Maiden Concert
+                  description: Iron Maiden returns to Spain this summer
+                  organizer: Delegacion de arte de Catalunya
+                  category: Music
+                  location: Estadi Olimpic Lluis Companys
+                  date: '29/06/2022'
+                  price: '100-200 euros'
+                  fqas:
+                    - id: f15
+                      question: Area for reduced mobility?
+                      answer: There is a conveniently equipped area for people with reduced mobility...
+        '400':
+          description: Bad request
+        '404':
+          description: Event or fqa not found
+    delete:
+      tags:
+        - events
+      summary: Delete fqa from event
+      description: Delete fqa from event
+      operationId: deleteFqaFromEvent
+      parameters:
+        - name: eventId
+          in: path
+          description: Id of the event
+          required: true
+          schema:
+            type: string
+        - name: fqaId
+          in: path
+          description: Id of the fqa
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No content. Fqa deleted from event
+        '404':
+          description: Event or fqa not found
+  /fqas:
+    get:
+      tags:
+        - fqas
+      summary: Get fqas
+      description: Get all fqas with the right attributes
+      operationId: getFqas
+      parameters:
+        - name: limit
+          in: query
+          description: The maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - name: offset
+          in: query
+          description: The number of items to skip before starting to collect the result
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - name: q
+          in: query
+          description: Query to filter
+          required: false
+          schema:
+            type: string
+        - name: fields
+          in: query
+          description: Returns only the properties of the fqas
+          required: false
+          schema:
+            type: string
+        - name: order
+          in: query
+          description: Order results by question or answer
+          required: false
+          schema:
+            type: string
+            enum:
+              - question
+              - '-question'
+              - answer
+              - '-answer'
+      responses:
+        '200':
+          description: Search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Fqa'
+        '400':
+          description: Bad request
+    post:
+      tags:
+        - fqas
+      summary: Create a fqa
+      description: Create a fqa with the rights attributes
+      operationId: createFqa
+      requestBody:
+        description: Fqa to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Fqa'
+      responses:
+        '201':
+          description: Fqa created correctly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fqa'
+        '400':
+          description: Bad request
+    put:
+      tags:
+        - fqas
+      summary: Update a fqa
+      description: Update a fqa introducing new values for certain attributes
+      operationId: updateFqa
+      requestBody:
+        description: Fqa to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Fqa'
+      responses:
+        '204':
+          description: No content. Fqa updated
+        '404':
+          description: Fqa not found
+  '/fqas/{id}':
+    get:
+      tags:
+        - fqas
+      summary: Get a fqa by ID
+      description: Get a fqa by ID with the right attributes
+      operationId: getFqa
+      parameters:
+        - name: id
+          in: path
+          description: Id of the fqa
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Fqa with corresponding id found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fqa'
+        '404':
+          description: Fqa not found
+    delete:
+      tags:
+        - fqas
+      summary: Delete a fqa
+      description: Delete a fqa
+      operationId: deleteFqa
+      parameters:
+        - name: id
+          in: path
+          description: Id of the fqa
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Fqa deleted
+        '404':
+          description: Fqa not found
 components:
   schemas:
-    Song:
-      type: object
-      required:
-        - title
-      properties:
-        id:
-          type: string
-        title:
-          type: string
-        artist:
-          type: string
-        album:
-          type: string
-        year:
-          type: string
-      example:
-        id: s1
-        title: Rolling in the Deep
-        artist: Adele
-        album: '21'
-        year: '2011'
-    Playlist:
+    City:
       type: object
       required:
         - name
+        - description
       properties:
         id:
           type: string
@@ -475,17 +775,92 @@ components:
           type: string
         description:
           type: string
-        songs:
+        events:
           type: array
           items:
-            $ref: '#/components/schemas/Song'
+            $ref: '#/components/schemas/Event'
       example:
-        id: p5
-        name: Favourites
-        description: My favourite songs
-        songs:
-          - id: s1
-            title: Rolling in the Deep
-            artist: Adele
-            album: '21'
-            year: '2011'
+        id: c9
+        name: Barcelona
+        description: The capital of Catalonia in Spain...
+        events:
+          - id: e5
+            name: Iron Maiden Concert
+            description: Iron Maiden returns to Spain this summer
+            organizer: Delegacion de arte de Catalunya
+            category: Music
+            location: Estadi Olimpic Lluis Companys
+            date: '29/06/2022'
+            price: '100-200 euros'
+            fqas:
+              - id: f15
+                question: Area for reduced mobility?
+                answer: There is a conveniently equipped area for people with reduced mobility...
+          - id: e6
+            name: Mobile World Congress
+            description: Great fair dedicated to mobile telephony and other technological devices...
+            organizer: GSM Association
+            category: Technology
+            location: Fira Gran Via
+            date: '28/02/2022'
+            price: '700-4200 euros'
+            fqas: null
+    Event:
+      type: object
+      required:
+        - name
+        - description
+        - organizer
+        - category
+        - location
+        - date
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        organizer:
+          type: string
+        category:
+          type: string
+        location:
+          type: string
+        date:
+          type: string
+        price:
+          type: string
+        fqas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Fqa'
+      example:
+        id: e5
+        name: Iron Maiden Concert
+        description: Iron Maiden returns to Spain this summer
+        organizer: Delegacion de arte de Catalunya
+        category: Music
+        location: Estadi Olimpic Lluis Companys
+        date: '29/06/2022'
+        price: '100-200 euros'
+        fqas:
+          - id: f15
+            question: Area for reduced mobility?
+            answer: There is a conveniently equipped area for people with reduced mobility...
+    Fqa:
+      type: object
+      required:
+        - question
+        - answer
+      properties:
+        id:
+          type: string
+        question:
+          type: string
+        answer:
+          type: string
+      example:
+        id: f15
+        question: Area for reduced mobility?
+        answer: There is a conveniently equipped area for people with reduced mobility...
