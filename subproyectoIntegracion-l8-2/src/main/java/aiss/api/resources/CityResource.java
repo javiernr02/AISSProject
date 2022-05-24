@@ -217,7 +217,31 @@ public class CityResource {
 				.findFirst().toString();
 		
 		return "El organizador que más eventos  ha organizado en la ciudad con id = "+id + " (" +
-				repository.getCity(id).getName() + ") es: " + masRelevante;
+				repository.getCity(id).getName() + ") es: " + masRelevante + "con "+ numOrganizados.get(masRelevante)+ " eventos organizados";
+	}
+	@GET
+	@Path("/eventCategories/{id}")
+	@Produces("text/plain")
+	public String eventCategoriesCity(@PathParam("id") String id) {
+		City city = repository.getCity(id);
+		List<String> categorias = repository.getAll(id).stream().map(i->i.getCategory())
+				.collect(Collectors.toList());
+		Map<String,Integer> numCategorias= new HashMap<>();
+		if (city == null) {
+			throw new NotFoundException("The city with id=" + id + " was not found");			
+		}
+		for(String categoria:categorias) {
+			if(numCategorias.containsKey(categoria)) {
+				numCategorias.put(categoria, numCategorias.get(categoria)+1);
+			}else {
+				numCategorias.put(categoria, 1);
+			}
+		}
+		String res = "Lista de numero de eventos por categoría para la ciudad con id = "+ id +" (" +repository.getCity(id).getName() + ") : \n"
+		+numCategorias.entrySet().stream().sorted(Map.Entry.comparingByValue(Collections.reverseOrder())).toString();
+		
+		
+		return res;
 	}
 	
 	@POST
