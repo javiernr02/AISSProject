@@ -194,7 +194,7 @@ public class CityResource {
 	}
 	
 	@GET
-	@Path("/totalPrice/{id}")
+	@Path("/mostRelevantOrganizer/{id}")
 	@Produces("text/plain")
 	public String mostRelevantOrganizerCity(@PathParam("id") String id) {
 		City city = repository.getCity(id);
