@@ -197,7 +197,7 @@ public class EventResource {
 		
 		return res;
 	}
-	
+		
 	@POST
 	@Consumes("application/json")
 	@Produces("application/json")

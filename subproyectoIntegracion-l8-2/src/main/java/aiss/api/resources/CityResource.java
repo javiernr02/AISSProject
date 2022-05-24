@@ -1,11 +1,12 @@
 package aiss.api.resources;
 
 import java.net.URI;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.ws.rs.Consumes;
@@ -14,24 +15,24 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.jboss.resteasy.spi.BadRequestException;
 import org.jboss.resteasy.spi.NotFoundException;
 
 import aiss.api.resources.comparators.ComparatorNameCity;
 import aiss.api.resources.comparators.ComparatorNameCityReversed;
-import aiss.model.repository.MapCityRepository;
 import aiss.model.City;
 import aiss.model.Event;
 import aiss.model.repository.CityRepository;
+import aiss.model.repository.MapCityRepository;
 
 
 
@@ -190,6 +191,33 @@ public class CityResource {
 				" euros y como máximo " + sumMax + " euros";
 		
 		return res;
+	}
+	
+	@GET
+	@Path("/totalPrice/{id}")
+	@Produces("text/plain")
+	public String mostRelevantOrganizerCity(@PathParam("id") String id) {
+		City city = repository.getCity(id);
+		List<String> organizadores = repository.getAll(id).stream().map(i->i.getOrganizer())
+				.collect(Collectors.toList());
+		Map<String,Integer> numOrganizados= new HashMap<>();
+		
+		if (city == null) {
+			throw new NotFoundException("The city with id=" + id + " was not found");			
+		}
+		for(String organizador:organizadores) {
+			if(numOrganizados.containsKey(organizador)) {
+				numOrganizados.put(organizador, numOrganizados.get(organizador)+1);
+			}else {
+				numOrganizados.put(organizador, 1);
+			}
+		}
+		String masRelevante = numOrganizados.entrySet().
+				stream().sorted(Map.Entry.comparingByValue(Collections.reverseOrder())).map(i->i.getKey())
+				.findFirst().toString();
+		
+		return "El organizador que más eventos  ha organizado en la ciudad con id = "+id + " (" +
+				repository.getCity(id).getName() + ") es: " + masRelevante;
 	}
 	
 	@POST
