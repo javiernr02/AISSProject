@@ -76,7 +76,9 @@ public class CityResource {
 		for(int i = start; i < end; i++) {
 			// Si no se usa los filtros de paginación o si se cumple el filtro que contiene cadena
 			// en nombre o descripción, miramos filtro name
-			if(q == null || cities.get(i).getName().contains(q) || cities.get(i).getDescription().contains(q)) {
+			if(q == null || cities.get(i).getName().trim().toLowerCase()
+					.contains(q.trim().toLowerCase()) || cities.get(i).getDescription().trim()
+					.toLowerCase().contains(q.trim().toLowerCase())) {
 				
 				// Si no se usa el filtro o si se cumple el filtro por nombre, miramos filtro de isEmpty
 				if(name == null || cities.get(i).getName().equals(name)) {
@@ -96,6 +98,12 @@ public class CityResource {
 						if(fields != null) {
 							if(fields.equals("name")) {
 								City cityNew = new City(cities.get(i).getName());
+								result.remove(cities.get(i));
+								result.add(cityNew);
+							}
+							else if(fields.equals("name") && fields.equals("description")) {
+								City cityNew = new City(cities.get(i).getName(),
+										cities.get(i).getDescription());
 								result.remove(cities.get(i));
 								result.add(cityNew);
 							}
@@ -119,18 +127,6 @@ public class CityResource {
 				throw new BadRequestException("The order parameter must be 'name' or '-name'.");
 			}
 		}
-		
-		
-		/*if(fields != null) {
-			for(int i=0; i<result.size(); i++) {
-				City cityNew = new City();
-				cityNew.setName(result.get(i).getName());
-				cityNew.setDescription(result.get(i).getDescription());
-				result.remove(i);
-				result.add(cityNew);
-			}
-		
-		}*/
 		
 		return result;
 			
@@ -196,7 +192,7 @@ public class CityResource {
 	@GET
 	@Path("/mostRelevantOrganizer/{id}")
 	@Produces("text/plain")
-	public String mostRelevantOrganizerCity(@PathParam("id") String id) {
+	public String getMostRelevantOrganizerCity(@PathParam("id") String id) {
 		City city = repository.getCity(id);
 		List<String> organizadores = repository.getAll(id).stream().map(i->i.getOrganizer())
 				.collect(Collectors.toList());
@@ -214,15 +210,15 @@ public class CityResource {
 		}
 		String masRelevante = numOrganizados.entrySet().
 				stream().sorted(Map.Entry.comparingByValue(Collections.reverseOrder())).map(i->i.getKey())
-				.findFirst().toString();
+				.findFirst().get();
 		
-		return "El organizador que más eventos  ha organizado en la ciudad con id = "+id + " (" +
-				repository.getCity(id).getName() + ") es: " + masRelevante + "con "+ numOrganizados.get(masRelevante)+ " eventos organizados";
+		return "El organizador que más eventos ha organizado en la ciudad con id = " + id + " (" +
+				repository.getCity(id).getName() + ") es: " + masRelevante + " con "+ numOrganizados.get(masRelevante) + " eventos organizados";
 	}
 	@GET
 	@Path("/eventCategories/{id}")
 	@Produces("text/plain")
-	public String eventCategoriesCity(@PathParam("id") String id) {
+	public String getEventCategoriesCity(@PathParam("id") String id) {
 		City city = repository.getCity(id);
 		List<String> categorias = repository.getAll(id).stream().map(i->i.getCategory())
 				.collect(Collectors.toList());
@@ -237,9 +233,20 @@ public class CityResource {
 				numCategorias.put(categoria, 1);
 			}
 		}
-		String res = "Lista de numero de eventos por categoría para la ciudad con id = "+ id +" (" +repository.getCity(id).getName() + ") : \n"
-		+numCategorias.entrySet().stream().sorted(Map.Entry.comparingByValue(Collections.reverseOrder())).toString();
 		
+		List<String> ls = new ArrayList<>();
+		for(Map.Entry<String, Integer> pair: numCategorias.entrySet()) {
+			String s = "Categoría: " + pair.getKey() + " --> Número de eventos: " + pair.getValue();
+			
+			ls.add(s);
+		}
+		
+		String res = "Lista de número de eventos por categoría para la ciudad con id = " + id 
+				+ " (" + repository.getCity(id).getName() + ")\n";
+		
+		for(int i=0; i<ls.size(); i++) {
+			res = res + ls.get(i) + "\n";
+		}
 		
 		return res;
 	}
@@ -251,6 +258,9 @@ public class CityResource {
 		// @Context permite inyectar determinados objetos con info sobre el determinado contexto
 		if (city.getName() == null || "".equals(city.getName()))
 			throw new BadRequestException("The name of the city must not be null");
+		
+		if (city.getDescription() == null || "".equals(city.getDescription()))
+			throw new BadRequestException("The description of the city must not be null");
 		
 		if (city.getEvents()!=null)
 			throw new BadRequestException("The events property is not editable.");

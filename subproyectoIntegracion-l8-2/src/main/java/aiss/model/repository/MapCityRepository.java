@@ -274,6 +274,11 @@ public class MapCityRepository implements CityRepository{
 	}
 	
 	@Override
+	public Collection<FQA> getAll2(String eventId) {
+		return getEvent(eventId).getFQAs();
+	}
+	
+	@Override
 	public void addFQA(String eventId, String fqaId) {
 		Event event = getEvent(eventId);
 		event.addFQA(fqaMap.get(fqaId));
@@ -309,6 +314,13 @@ public class MapCityRepository implements CityRepository{
 	public void deleteFQA(String fqaId) {
 		fqaMap.remove(fqaId);
 		
+	}
+	
+	@Override
+	public void updateFQA(FQA f) {
+		FQA fqa = fqaMap.get(f.getId());
+		fqa.setQuestion(f.getQuestion());
+		fqa.setAnswer(f.getAnswer());
 	}
 
 }

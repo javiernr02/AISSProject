@@ -76,9 +76,10 @@ public class EventResource {
 		
 		// Bloque de código de filtrado y de paginación
 		for(int i = start; i < end; i++) {
-			if(q == null || events.get(i).getName().contains(q) || 
-					events.get(i).getDescription().contains(q) || events.get(i).getOrganizer().contains(q) || 
-					events.get(i).getLocation().contains(q)) {
+			if(q == null || events.get(i).getName().trim().toLowerCase().contains(q.trim().toLowerCase()) 
+					|| events.get(i).getDescription().trim().toLowerCase().contains(q.trim().toLowerCase()) 
+					|| events.get(i).getOrganizer().trim().toLowerCase().contains(q.trim().toLowerCase()) 
+					|| events.get(i).getLocation().trim().toLowerCase().contains(q.trim().toLowerCase())) {
 				
 				if(name == null || events.get(i).getName().equals(name)) {
 					
@@ -204,6 +205,26 @@ public class EventResource {
 	public Response addEvent(@Context UriInfo uriInfo, Event event) {
 		if(event.getName() == null || "".equals(event.getName())) {
 			throw new BadRequestException("The name of the event must not be null");
+		}
+		
+		if(event.getDescription() == null || "".equals(event.getDescription())) {
+			throw new BadRequestException("The description of the event must not be null");
+		}
+		
+		if(event.getOrganizer() == null || "".equals(event.getOrganizer())) {
+			throw new BadRequestException("The organizer of the event must not be null");
+		}
+		
+		if(event.getCategory() == null || "".equals(event.getCategory())) {
+			throw new BadRequestException("The category of the event must not be null");
+		}
+		
+		if(event.getLocation() == null || "".equals(event.getLocation())) {
+			throw new BadRequestException("The location of the event must not be null");
+		}
+		
+		if(event.getDate() == null || "".equals(event.getDate())) {
+			throw new BadRequestException("The date of the event must not be null");
 		}
 		
 		if (event.getFQAs()!=null)

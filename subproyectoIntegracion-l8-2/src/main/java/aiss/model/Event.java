@@ -125,8 +125,8 @@ public class Event {
 		FQAs.add(f);
 	}
 	
-	public void deleteFQA(FQA e) {
-		FQAs.remove(e);
+	public void deleteFQA(FQA f) {
+		FQAs.remove(f);
 	}
 	
 	public void deleteFQA(String id) {
@@ -138,13 +138,8 @@ public class Event {
 	
 	}
 	
-
 	public List<FQA> getFQAs() {
 		return FQAs;
-	}
-
-	public void setFQAs(List<FQA> fQAs) {
-		FQAs = fQAs;
 	}
 	
 	

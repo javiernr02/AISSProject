@@ -193,6 +193,52 @@ paths:
                 type: string
         '404':
           description: City not found
+  '/cities/mostRelevantOrganizer/{id}':
+    get:
+      tags:
+        - cities
+      summary: Gets the organizer who has held the most events in a city by ID
+      description: Gets the organizer who has held the most events in a city by ID along with the number of these
+      operationId: getMostRelevantOrganizerCity
+      parameters:
+        - name: id
+          in: path
+          description: Id of the city
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Organizer and number of events obtained for city with corresponding id
+          content:
+            text/plain:
+              schema:
+                type: string
+        '404':
+          description: City not found
+  '/cities/eventCategories/{id}':
+    get:
+      tags:
+        - cities
+      summary: Get list of event numbers by category of city by ID
+      description: Get list of event numbers by category of city by ID
+      operationId: getEventCategoriesCity
+      parameters:
+        - name: id
+          in: path
+          description: Id of the city
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of event numbers by category obtained for city with corresponding id
+          content:
+            text/plain:
+              schema:
+                type: string
+        '404':
+          description: City not found
   '/cities/{cityId}/{eventId}':
     post:
       tags:

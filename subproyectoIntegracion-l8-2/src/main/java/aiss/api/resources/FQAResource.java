@@ -1,6 +1,7 @@
 package aiss.api.resources;
 
 import java.net.URI;
+
 import java.util.ArrayList;
 
 import java.util.Collection;
@@ -67,8 +68,8 @@ public class FQAResource {
 		
 		// Bloque de código de filtrado y de paginación
 		for(int i = start; i < end; i++) {
-			if(q == null || fqas.get(i).getQuestion().contains(q) || 
-					fqas.get(i).getAnswer().contains(q)) {
+			if(q == null || fqas.get(i).getQuestion().trim().toLowerCase().contains(q.trim().toLowerCase()) 
+					|| fqas.get(i).getAnswer().trim().toLowerCase().contains(q.trim().toLowerCase())) {
 				
 				
 				result.add(fqas.get(i));
@@ -127,7 +128,11 @@ public class FQAResource {
 	@Produces("application/json")
 	public Response addFQA(@Context UriInfo uriInfo, FQA fqa) {
 		if(fqa.getQuestion() == null || "".equals(fqa.getQuestion())) {
-			throw new BadRequestException("The name of the fqa must not be null");
+			throw new BadRequestException("The question of the fqa must not be null");
+		}
+		
+		if(fqa.getAnswer() == null || "".equals(fqa.getAnswer())) {
+			throw new BadRequestException("The answer of the fqa must not be null");
 		}
 		
 		repository.addFQA(fqa);

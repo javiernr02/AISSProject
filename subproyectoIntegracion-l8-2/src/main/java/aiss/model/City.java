@@ -17,6 +17,11 @@ public class City {
 		this.name = name;
 	}
 	
+	public City(String name, String description) {
+		this.name = name;
+		this.description = description;
+	}
+	
 	protected void setEvents(List<Event> events) {
 		this.events = events;
 	}

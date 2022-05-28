@@ -16,6 +16,7 @@ public interface CityRepository {
 	public Event getEvent(String eventId);
 	public void updateEvent(Event e);
 	public void deleteEvent(String eventId);
+	public Collection<FQA> getAll2(String eventId);
 	public void addFQA(String eventId, String fqaId);
 	public void removeFQA(String eventId,String fqaId);
 	
@@ -33,6 +34,7 @@ public interface CityRepository {
 	public void addFQA(FQA f);
 	public Collection<FQA> getAllFQAs();
 	public FQA getFQA(String fqaId);
+	public void updateFQA(FQA f);
 	public void deleteFQA(String fqaId);
 	
 	
