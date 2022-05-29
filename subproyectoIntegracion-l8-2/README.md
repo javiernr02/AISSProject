@@ -3,8 +3,8 @@
 API basada en ciudades y eventos:
 Estos son los recursos
 - Cada ciudad tiene un: identificador, nombre, descripcion y eventos asociados
-- Cada evento tiene un: identificador, nombre, descripcion, organizador, fecha, aforo máximo (si hubiera), precio (si hubiera), categoria e imágenes asociadas
-- ¿Recurso imagen?
+- Cada evento tiene un: identificador, nombre, descripcion, organizador, categoria, localizacion, fecha, precio (si hubiera) y fqas asociados
+- Cada fqa tiene un: identificador, pregunta y respuesta
 
 Ejemplos JSON:
 
@@ -42,4 +42,14 @@ Recurso Event:
 	"location":"La Cartuja Stadium",
 	"date:":"18/05, 21:00"
 	"price":"40-200 euros"
+}
+
+
+Recurso FQA:
+
+{
+	"id": "f14",
+	"question": "Can I take photos? Can it be filmed?",
+	"answer": "Yes, you can take photos and make films inside the Stadium as long as the films are not used for commercial purposes."
+	
 }
