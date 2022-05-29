@@ -38,7 +38,7 @@ paths:
           example: 2
         - name: offset
           in: query
-          description: The number of items to skip before starting to collect the result
+          description: The index of the first item to return
           required: false
           schema:
             type: integer
@@ -395,7 +395,7 @@ paths:
           example: 2
         - name: offset
           in: query
-          description: The number of items to skip before starting to collect the result
+          description: The index of the first item to return
           required: false
           schema:
             type: integer
@@ -702,7 +702,7 @@ paths:
           example: 2
         - name: offset
           in: query
-          description: The number of items to skip before starting to collect the result
+          description: The index of the first item to return
           required: false
           schema:
             type: integer

@@ -173,6 +173,16 @@ public class MapCityRepository implements CityRepository{
 				+ "Mandatory to go with a companion.");
 		addFQA(fqa2);
 		
+		FQA fqa3 = new FQA();
+		fqa3.setQuestion("What do qualifyings tickets give access to?");
+		fqa3.setAnswer("It gives you access to courts 6 to 18. On Thursday and Friday you can also watch practice sessions on court Suzanne Lenglen.");
+		addFQA(fqa3);
+		
+		FQA fqa4 = new FQA();
+		fqa4.setQuestion("Where to inquire about sponsorship opportunities around the Eurovision Song Contest?");
+		fqa4.setAnswer("International sponsorship of the Eurovision Song Contest is being coordinated by Highlight Event AG.");
+		addFQA(fqa4);
+		
 		// Add event to cities
 		addEvent(seville.getId(), europaLeagueFinal.getId());
 		addEvent(seville.getId(), sergioDalmaConcert.getId());
@@ -189,6 +199,8 @@ public class MapCityRepository implements CityRepository{
 		// Add fqas to events
 		addFQA(europaLeagueFinal.getId(), fqa1.getId());
 		addFQA(ironMaidenConcert.getId(), fqa2.getId());
+		addFQA(rolandGarros.getId(), fqa3.getId());
+		addFQA(eurovisionSongContest.getId(), fqa4.getId());
 	}
 	
 	// City related operations
