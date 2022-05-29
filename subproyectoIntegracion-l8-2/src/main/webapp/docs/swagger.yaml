@@ -35,6 +35,7 @@ paths:
             type: integer
             format: int32
             minimum: 0
+          example: 2
         - name: offset
           in: query
           description: The number of items to skip before starting to collect the result
@@ -43,18 +44,21 @@ paths:
             type: integer
             format: int32
             minimum: 0
+          example: 0
         - name: q
           in: query
-          description: Query to filter
+          description: Query to filter that given a text is show only those cities that contain that text in the name or description (ignoring upper and lower case)
           required: false
           schema:
             type: string
+          example: capital
         - name: name
           in: query
           description: Filter cities by name
           required: false
           schema:
             type: string
+          example: Seville
         - name: isEmpty
           in: query
           description: Filter cities with no events
@@ -63,7 +67,7 @@ paths:
             type: boolean
         - name: fields
           in: query
-          description: Returns only the properties of the cities
+          description: Returns only the city name property
           required: false
           schema:
             type: string
@@ -191,6 +195,7 @@ paths:
             text/plain:
               schema:
                 type: string
+                example: Para poder ir a todos los eventos de la ciudad con id = c8 (Seville) tendrá que gastarse como mínimo 100 euros y como máximo 280 euros
         '404':
           description: City not found
   '/cities/mostRelevantOrganizer/{id}':
@@ -214,6 +219,7 @@ paths:
             text/plain:
               schema:
                 type: string
+                example: El organizador que más eventos ha organizado en la ciudad con id = c8 (Seville) es Ayuntamiento de Sevilla con 3 eventos organizados
         '404':
           description: City not found
   '/cities/eventCategories/{id}':
@@ -237,6 +243,7 @@ paths:
             text/plain:
               schema:
                 type: string
+                example: Lista de número de eventos por categoría para la ciudad con id = c8 (Seville)...
         '404':
           description: City not found
   '/cities/{cityId}/{eventId}':
@@ -385,6 +392,7 @@ paths:
             type: integer
             format: int32
             minimum: 0
+          example: 2
         - name: offset
           in: query
           description: The number of items to skip before starting to collect the result
@@ -393,36 +401,42 @@ paths:
             type: integer
             format: int32
             minimum: 0
+          example: 0
         - name: q
           in: query
-          description: Query to filter
+          description: Query to filter that given a text is show only those events that contain that text in the name, description, organizer or location (ignoring upper and lower case)
           required: false
           schema:
             type: string
+          example: Cartuja
         - name: name
           in: query
           description: Filter events by name
           required: false
           schema:
             type: string
+          example: Iron Maiden Concert
         - name: organizer
           in: query
           description: Filter events by organizer
           required: false
           schema:
             type: string
+          example: Ayuntamiento de Sevilla
         - name: category
           in: query
           description: Filter events by category
           required: false
           schema:
             type: string
+          example: Music
         - name: location
           in: query
           description: Filter events by location
           required: false
           schema:
             type: string
+          example: Cartuja Center
         - name: isEmpty
           in: query
           description: Filter events with no fqas
@@ -431,7 +445,7 @@ paths:
             type: boolean
         - name: fields
           in: query
-          description: Returns only the properties of the events
+          description: Returns only the name property of the event
           required: false
           schema:
             type: string
@@ -563,6 +577,7 @@ paths:
             text/plain:
               schema:
                 type: string
+                example: Para el evento con id = e5 (Iron Maiden Concert) faltan 31 días.
         '404':
           description: Event not found
   '/events/{eventId}/{fqaId}':
@@ -684,6 +699,7 @@ paths:
             type: integer
             format: int32
             minimum: 0
+          example: 2
         - name: offset
           in: query
           description: The number of items to skip before starting to collect the result
@@ -692,15 +708,17 @@ paths:
             type: integer
             format: int32
             minimum: 0
+          example: 0
         - name: q
           in: query
-          description: Query to filter
+          description: Query to filter that given a text is show only those fqas that contain that text in the question or answer (ignoring upper and lower case)
           required: false
           schema:
             type: string
+          example: Can
         - name: fields
           in: query
-          description: Returns only the properties of the fqas
+          description: Returns only the question property of the fqa
           required: false
           schema:
             type: string

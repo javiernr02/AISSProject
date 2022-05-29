@@ -213,7 +213,7 @@ public class CityResource {
 				.findFirst().get();
 		
 		return "El organizador que más eventos ha organizado en la ciudad con id = " + id + " (" +
-				repository.getCity(id).getName() + ") es: " + masRelevante + " con "+ numOrganizados.get(masRelevante) + " eventos organizados";
+				repository.getCity(id).getName() + ") es " + masRelevante + " con "+ numOrganizados.get(masRelevante) + " eventos organizados";
 	}
 	@GET
 	@Path("/eventCategories/{id}")
